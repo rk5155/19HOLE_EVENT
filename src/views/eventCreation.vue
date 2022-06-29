@@ -1,7 +1,6 @@
 <template>
   <div>
     <form>
-
       <div class="mb-3">
         <span>※</span>
         <label class="form-label">イベント名</label>
@@ -55,14 +54,23 @@ import { collection, addDoc, getFirestore } from "firebase/firestore";
 export default {
   data () {
     return {
-      eventName: '',
-      venue: '',
-      timesDay: '',
-      deadline: '',
-      cost: 0,
-      cancel: '',
-      numberOfPairs: 0,
+      eventName: null,
+      venue: null,
+      timesDay: null,
+      deadline: null,
+      cost: null,
+      cancel: null,
+      numberOfPairs: null,
       playTime: null
+    }
+  },
+  computed: {
+    emptyCheck () {
+      if (this.eventName && this.venue && this.timesDay && this.deadline && this.cost && this.cancel && this.numberOfPairs && this.playTime) {
+        return true
+      } else {
+        return false
+      }
     }
   },
   methods: {
@@ -70,20 +78,32 @@ export default {
       const db = getFirestore()
 
       try {
-        addDoc(collection(db, "events"), {
-          eventName: this.eventName,
-          venue: this.venue,
-          timesDay: this.timesDay,
-          deadline: this.deadline,
-          cost: this.cost,
-          cancel: this.cancel,
-          numberOfPairs: this.numberOfPairs,
-          playTime: this.playTime,
-        }).then((result) => {
-          console.log(result);
-        }).catch((error) => {
-          console.log(error)
-        })
+        if (this.emptyCheck) {
+          addDoc(collection(db, "events"), {
+            eventName: this.eventName,
+            venue: this.venue,
+            timesDay: this.timesDay,
+            deadline: this.deadline,
+            cost: this.cost,
+            cancel: this.cancel,
+            numberOfPairs: this.numberOfPairs,
+            playTime: this.playTime,
+          }).then(() => {
+            this.eventName = null
+            this.venue  = null
+            this.timesDay = null
+            this.deadline = null
+            this.cost = null
+            this.cancel = null
+            this.numberOfPairs = null
+            this.playTime = null
+            alert("イベントを作成しました")
+          }).catch((error) => {
+            console.log(error)
+          })
+        } else {
+          alert("未入力があるよ")
+        }
       } catch (e) {
         console.error("Error adding document: ", e);
       }
