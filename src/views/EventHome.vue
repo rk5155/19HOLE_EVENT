@@ -1,6 +1,7 @@
 <template>
   <div class="events">
     <h1 class="eventsTitle">イベント一覧</h1>
+    {{loginUserName}}
     <div class="eventList">
       <div v-for="(event, index) in events" :key="index" class="eventItem card text-dark bg-light mb-3">
         <div class="card-header">開催日時: {{ event.timesDay }} {{event.playTime}}</div>
@@ -11,7 +12,7 @@
           <p class="card-text">プレー日: {{ event.cost.toLocaleString() }}円</p>
           <p class="card-text">キャンセル規定: {{ event.cancel }}</p>
           <p class="card-text">組数: {{ event.numberOfPairs }}</p>
-          <button type="button" class="btn btn-warning">参加する</button>
+          <a href="https://buy.stripe.com/00geYx56V1KH85G145" type="button" class="btn btn-warning">参加する</a>
         </div>
       </div>
     </div>
@@ -20,11 +21,13 @@
 
 <script>
 import { collection, getDocs, getFirestore } from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 export default {
   data () {
     return {
-      events: []
+      events: [],
+      loginUserName: null
     }
   },
   created () {
@@ -34,15 +37,20 @@ export default {
         this.events.push(doc.data())
       });
     }))
-  }
+
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+          // User is signed in, see docs for a list of available properties
+          // https://firebase.google.com/docs/reference/js/firebase.User
+          this.loginUserName = user.displayName;
+        }
+    });
+  },
 }
 </script>
 
 <style>
-.events {
-  width: 860px;
-  margin: 30px auto;
-}
 
 .eventsTitle {
   font-size: 30px;
