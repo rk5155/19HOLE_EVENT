@@ -12,7 +12,8 @@
           <p class="card-text">プレー日: {{ event.cost.toLocaleString() }}円</p>
           <p class="card-text">キャンセル規定: {{ event.cancel }}</p>
           <p class="card-text">組数: {{ event.numberOfPairs }}</p>
-          <button class="btn btn-warning" @click="submit">参加する</button>
+          <button v-if="isEventToAttend(event.eventId)" class="btn btn-warning">このイベントに参加予定です</button>
+          <button v-else class="btn btn-warning" @click="participationFeePayment(event.eventId)">参加する</button>
         </div>
       </div>
     </div>
@@ -30,7 +31,7 @@
 </template>
 
 <script>
-import { collection, getDocs, getFirestore } from "firebase/firestore";
+import { collection, getDocs, getFirestore, updateDoc, doc, arrayUnion, getDoc } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { StripeCheckout } from '@vue-stripe/vue-stripe';
 
@@ -39,45 +40,69 @@ export default {
     StripeCheckout,
   },
   data () {
-    this.publishableKey = 'pk_live_51Ko2ckHIT4Uh5KIjb0UXJHWVs2vpbCAmF152Vw5C0QqeVm2SBC4TcVET1guSf3Poz8subJBE6RujxgkZGvoA6fa300smCFrF7F'
+    this.publishableKey = 'pk_test_51Ko2ckHIT4Uh5KIjqI6JgyPkIoI7oGeNSld2MBeKEtpUdCpj4lwyjtPDqwQtbOPgH0SZxB2XCixr2Wx1rUFwUmJc00RJloQKEG'
     return {
       loading: false,
       lineItems: [
         {
-          price: 'price_1LFxrlHIT4Uh5KIjNMhUVsJe', // The id of the one-time price you created in your Stripe dashboard
+          price: 'price_1LFxtCHIT4Uh5KIj2oJQQmS6', // The id of the one-time price you created in your Stripe dashboard
           quantity: 1,
         },
       ],
-      successURL: 'https://19hole-golf-event.netlify.app/',
-      cancelURL: 'https://19hole-golf-event.netlify.app/',
+      successURL: `${location.protocol}//${location.host}/`,
+      cancelURL: `${location.protocol}//${location.host}/`,
       events: [],
       loginUserName: null,
-      loginUserEmail: null
+      loginUserEmail: null,
+      loginUserId: null,
+      loginUserEventsToAttend: null
     }
   },
   created () {
     const db = getFirestore()
+
     getDocs(collection(db, "events")).then((result => {
-      result.forEach((doc) => {
-        this.events.push(doc.data())
+      result.forEach((event) => {
+        let eventData = event.data()
+        eventData.eventId = event.id
+        this.events.push(eventData)
       });
     }))
 
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
-        if (user) {
-          // User is signed in, see docs for a list of available properties
-          // https://firebase.google.com/docs/reference/js/firebase.User
-          this.loginUserName = user.displayName;
-          this.loginUserEmail = user.email;
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/firebase.User
+        this.loginUserName = user.displayName;
+        this.loginUserEmail = user.email;
+        this.loginUserId = user.uid
+
+        const loginUserProfile = doc(db, "users", this.loginUserId);
+
+        if (location.search) {
+          const eventId = location.search.slice(1)
+
+          updateDoc(loginUserProfile, {
+            eventsToAttend: arrayUnion(eventId)
+          })
         }
-    });
+
+        getDoc(loginUserProfile).then((result) => {
+          this.loginUserEventsToAttend = result.data().eventsToAttend
+        })
+      }
+    })
   },
   methods: {
-    submit () {
+    participationFeePayment (eventId) {
+      this.successURL = `${this.successURL}?${eventId}`
       // You will be redirected to Stripe's secure checkout page
       this.$refs.checkoutRef.redirectToCheckout();
     },
+    isEventToAttend (eventId) {
+      return this.loginUserEventsToAttend && this.loginUserEventsToAttend.includes(eventId)
+    }
   },
 }
 </script>

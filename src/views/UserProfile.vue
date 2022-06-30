@@ -11,6 +11,7 @@
 
 <script>
 import { getAuth, updateProfile } from 'firebase/auth'
+import { doc, setDoc, getFirestore } from 'firebase/firestore'
 
 export default {
   data () {
@@ -21,12 +22,14 @@ export default {
   methods: {
     userProfileRegistration: function () {
       const auth = getAuth();
+      const db = getFirestore()
 
       if (this.name) {
         updateProfile(auth.currentUser, {
           displayName: this.name
         }).then(() => {
           this.$router.push('/')
+          setDoc(doc(db, "users", auth.lastNotifiedUid), {})
         }).catch((error) => {
           console.log(error);
         });
