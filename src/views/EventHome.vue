@@ -59,13 +59,15 @@ export default {
       loginUserName: null,
       loginUserEmail: null,
       loginUserId: null,
-      loginUserEventsToAttend: null
+      loginUserEventsToAttend: null,
+      getFirestoreDb: null,
+      loginUserProfile: null
     }
   },
   created () {
-    const db = getFirestore()
+    this.getFirestoreDb = getFirestore()
 
-    getDocs(collection(db, "events")).then((result => {
+    getDocs(collection(this.getFirestoreDb, "events")).then((result => {
       result.forEach((event) => {
         let eventData = event.data()
         eventData.eventId = event.id
@@ -81,18 +83,17 @@ export default {
         this.loginUserName = user.displayName;
         this.loginUserEmail = user.email;
         this.loginUserId = user.uid
-
-        const loginUserProfile = doc(db, "users", this.loginUserId);
+        this.loginUserProfile = doc(this.getFirestoreDb, "users", this.loginUserId);
 
         if (location.search) {
           const eventId = location.search.slice(1)
 
-          updateDoc(loginUserProfile, {
+          updateDoc(this.loginUserProfile, {
             eventsToAttend: arrayUnion(eventId)
           })
         }
 
-        getDoc(loginUserProfile).then((result) => {
+        getDoc(this.loginUserProfile).then((result) => {
           this.loginUserEventsToAttend = result.data().eventsToAttend
         })
       }
@@ -108,11 +109,8 @@ export default {
       return this.loginUserEventsToAttend && this.loginUserEventsToAttend.includes(eventId)
     },
     nonParticipationEvent (eventId) {
-      const db = getFirestore()
-      const loginUserProfile = doc(db, "users", this.loginUserId);
-
       if (window.confirm('参加費は返金されませんがよろしいですか？')) {
-        updateDoc(loginUserProfile, {
+        updateDoc(this.loginUserProfile, {
           eventsToAttend: arrayRemove(eventId)
         }).then(() => {
           this.$router.push('/')
