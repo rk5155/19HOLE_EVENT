@@ -20,20 +20,19 @@ export default {
   },
   methods: {
     userProfileRegistration: function () {
-        const auth = getAuth();
+      const auth = getAuth();
 
-        if (this.name) {
-          updateProfile(auth.currentUser, {
-            displayName: this.name
-          }).then(() => {
-            this.$router.push('/')
-          }).catch((error) => {
-            console.log(error);
-          });
-        } else {
-          alert('氏名を入力してください')
-        }
-
+      if (this.name) {
+        updateProfile(auth.currentUser, {
+          displayName: this.name
+        }).then(() => {
+          this.$router.push('/')
+        }).catch((error) => {
+          console.log(error);
+        });
+      } else {
+        alert('氏名を入力してください')
+      }
     },
   }
 }
