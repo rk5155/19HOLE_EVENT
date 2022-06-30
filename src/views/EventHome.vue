@@ -12,7 +12,11 @@
           <p class="card-text">プレー日: {{ event.cost.toLocaleString() }}円</p>
           <p class="card-text">キャンセル規定: {{ event.cancel }}</p>
           <p class="card-text">組数: {{ event.numberOfPairs }}</p>
-          <button v-if="isEventToAttend(event.eventId)" class="btn btn-warning">このイベントに参加予定です</button>
+          <template v-if="isEventToAttend(event.eventId)">
+            <p class="">このイベントに参加予定です</p>
+            <button class="btn btn-warning">グループチャットへ移動する</button>
+            <button class="btn btn-warning" @click="nonParticipationEvent(event.eventId)">不参加</button>
+          </template>
           <button v-else class="btn btn-warning" @click="participationFeePayment(event.eventId)">参加する</button>
         </div>
       </div>
@@ -31,7 +35,7 @@
 </template>
 
 <script>
-import { collection, getDocs, getFirestore, updateDoc, doc, arrayUnion, getDoc } from "firebase/firestore";
+import { collection, getDocs, getFirestore, updateDoc, doc, arrayUnion, getDoc, arrayRemove } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { StripeCheckout } from '@vue-stripe/vue-stripe';
 
@@ -102,6 +106,20 @@ export default {
     },
     isEventToAttend (eventId) {
       return this.loginUserEventsToAttend && this.loginUserEventsToAttend.includes(eventId)
+    },
+    nonParticipationEvent (eventId) {
+      const db = getFirestore()
+      const loginUserProfile = doc(db, "users", this.loginUserId);
+
+      if (window.confirm('参加費は返金されませんがよろしいですか？')) {
+        updateDoc(loginUserProfile, {
+          eventsToAttend: arrayRemove(eventId)
+        }).then(() => {
+          this.$router.push('/')
+          // 一度リロードして、画面を更新
+          this.$router.go({path: '/', force: true})
+        })
+      }
     }
   },
 }
