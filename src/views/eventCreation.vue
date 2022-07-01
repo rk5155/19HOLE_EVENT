@@ -50,6 +50,7 @@
 
 <script>
 import { collection, addDoc, getFirestore } from "firebase/firestore";
+import { getDatabase, ref, set } from "firebase/database";
 
 export default {
   data () {
@@ -88,7 +89,7 @@ export default {
             cancel: this.cancel,
             numberOfPairs: this.numberOfPairs,
             playTime: this.playTime,
-          }).then(() => {
+          }).then((result) => {
             this.eventName = null
             this.venue  = null
             this.timesDay = null
@@ -97,7 +98,14 @@ export default {
             this.cancel = null
             this.numberOfPairs = null
             this.playTime = null
+
+            const realTimedb = getDatabase()
+            // イベントチャットルームを作成
+            set(ref(realTimedb, `eventChatRoom/${result.id}`), {
+              eventId: result.id,
+            })
             alert("イベントを作成しました")
+            this.$router.push('/')
           }).catch((error) => {
             console.log(error)
           })
