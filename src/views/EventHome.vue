@@ -117,12 +117,18 @@ export default {
     },
     nonParticipationEvent (eventId) {
       if (window.confirm('参加費は返金されませんがよろしいですか？')) {
-        updateDoc(this.loginUserProfile, {
-          eventsToAttend: arrayRemove(eventId)
+        const nonParticipationEvent = doc(this.getFirestoreDb, "events", eventId);
+
+        updateDoc(nonParticipationEvent, {
+          eventParticiPants: arrayRemove(this.loginUserName)
         }).then(() => {
-          this.$router.push('/')
-          // 一度リロードして、画面を更新
-          this.$router.go({path: '/', force: true})
+          updateDoc(this.loginUserProfile, {
+            eventsToAttend: arrayRemove(eventId)
+          }).then(() => {
+            this.$router.push('/')
+            // 一度リロードして、画面を更新
+            this.$router.go({path: '/', force: true})
+          })
         })
       }
     },
