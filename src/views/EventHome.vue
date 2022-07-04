@@ -92,6 +92,12 @@ export default {
           updateDoc(this.loginUserProfile, {
             eventsToAttend: arrayUnion(eventId)
           })
+
+          const participationEvent = doc(this.getFirestoreDb, "events", eventId);
+
+          updateDoc(participationEvent, {
+            eventParticiPants: arrayUnion(this.loginUserName)
+          })
         }
 
         getDoc(this.loginUserProfile).then((result) => {
