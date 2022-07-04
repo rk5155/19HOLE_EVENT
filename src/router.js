@@ -5,6 +5,7 @@ import eventCreation from '@/views/eventCreation'
 import SignUp from '@/views/SignUp'
 import UserProfile from '@/views/UserProfile'
 import ChatRoom from '@/views/ChatRoom'
+import AdminPage from '@/views/AdminPage'
 
 Vue.use(Router)
 
@@ -35,6 +36,11 @@ export default new Router({
       path: '/ChatRoom/:eventId',
       name: 'ChatRoom',
       component: ChatRoom
+    },
+    {
+      path: '/AdminPage',
+      name: 'AdminPage',
+      component: AdminPage
     }
   ]
 })
