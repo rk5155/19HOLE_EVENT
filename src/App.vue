@@ -1,13 +1,22 @@
 <template>
   <div id="app">
-    <router-link to="/">home</router-link>
-    <router-link to="/SignUp">SignUp</router-link>
-    <router-link to="/eventCreation">イベント作成</router-link>
+    <HeaderNav/>
+
     <main id="main">
       <router-view/>
     </main>
   </div>
 </template>
+
+<script>
+import HeaderNav from '@/components/HeaderNav.vue'
+export default {
+  components: {
+    HeaderNav
+  }
+}
+</script>
+
 <style>
 #main {
   width: 860px;
