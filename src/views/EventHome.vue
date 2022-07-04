@@ -14,7 +14,7 @@
           <p class="card-text">組数: {{ event.numberOfPairs }}</p>
           <template v-if="isEventToAttend(event.eventId)">
             <p class="">このイベントに参加予定です</p>
-            <button class="btn btn-warning">グループチャットへ移動する</button>
+            <button class="btn btn-warning"><router-link :to="{ name: 'ChatRoom', params: { eventId: event.eventId }}">グループチャット</router-link></button>
             <button class="btn btn-warning" @click="nonParticipationEvent(event.eventId)">不参加</button>
           </template>
           <button v-else class="btn btn-warning" @click="participationFeePayment(event.eventId)">参加する</button>
