@@ -18,6 +18,7 @@
             <button class="btn btn-warning" @click="nonParticipationEvent(event.eventId)">不参加</button>
           </template>
           <button v-else class="btn btn-warning" @click="participationFeePayment(event.eventId)">参加する</button>
+          <button class="btn btn-warning" @click="eventDelete(event.eventId)">イベント削除</button>
         </div>
       </div>
     </div>
@@ -35,7 +36,7 @@
 </template>
 
 <script>
-import { collection, getDocs, getFirestore, updateDoc, doc, arrayUnion, getDoc, arrayRemove } from "firebase/firestore";
+import { collection, getDocs, getFirestore, updateDoc, doc, arrayUnion, getDoc, arrayRemove, deleteDoc, query, where } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { StripeCheckout } from '@vue-stripe/vue-stripe';
 
@@ -117,6 +118,30 @@ export default {
           // 一度リロードして、画面を更新
           this.$router.go({path: '/', force: true})
         })
+      }
+    },
+    eventDelete (eventId) {
+      console.log(eventId);
+      if (window.confirm('イベントを削除しますよ？')) {
+        deleteDoc(doc(this.getFirestoreDb, "events", eventId))
+          .then(() => {
+            // イベント参加のユーザーを検索してeventsToAttendからイベントを削除
+            getDocs(query(collection(this.getFirestoreDb, "users"), where("eventsToAttend", "array-contains", eventId)))
+              .then(eventParticipants => {
+                eventParticipants.forEach(user => {
+                  const eventParticipantsUser = doc(this.getFirestoreDb, "users", user.id);
+
+                  updateDoc(eventParticipantsUser, {
+                    eventsToAttend: arrayRemove(eventId)
+                  })
+                })
+              })
+              .then(() => {
+                this.$router.push('/')
+                // 一度リロードして、画面を更新
+                this.$router.go({path: '/', force: true})
+              })
+          })
       }
     }
   },
