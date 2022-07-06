@@ -20,7 +20,19 @@ const adminAuthority = (to, from, next) => {
 
   onAuthStateChanged(auth, (user) => {
     if (user.uid === 'ZngB0KUd6EMxh0rNArPYvA5rCQv1') {
-      console.log(user);
+      next()
+    } else {
+      next({ name: 'LoginPage' })
+    }
+  })
+};
+
+// ログイン済のユーザのみ許可
+const logindPermission = (to, from, next) => {
+  const auth = getAuth()
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
       next()
     } else {
       // 認証されていない場合、認証画面へ
@@ -36,6 +48,7 @@ export default new Router({
       path: '/',
       name: 'EventHome',
       component: EventHome,
+      beforeEnter: multiguard([logindPermission]),
     },
     {
       path: '/eventCreation',
