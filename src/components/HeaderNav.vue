@@ -7,15 +7,16 @@
       </button>
       <div v-if="isDisplayHeader" class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-          <router-link to="/" class="nav-link">ホーム</router-link>
 
           <template v-if="isLoggedIn && loginUserName === '川田隆稀'">
+            <router-link to="/" class="nav-link">ホーム</router-link>
             <router-link to="/AdminPage" class="nav-link">管理者</router-link>
             <router-link to="/eventCreation" class="nav-link">イベント作成</router-link>
             <router-link to="/LogOutPage" class="nav-link">ログアウト</router-link>
           </template>
 
           <template v-else-if="isLoggedIn">
+            <router-link to="/" class="nav-link">ホーム</router-link>
             <router-link to="/LogOutPage" class="nav-link">ログアウト</router-link>
           </template>
 
