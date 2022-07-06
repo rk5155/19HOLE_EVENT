@@ -6,6 +6,7 @@ import SignUp from '@/views/SignUp'
 import UserProfile from '@/views/UserProfile'
 import ChatRoom from '@/views/ChatRoom'
 import AdminPage from '@/views/AdminPage'
+import LoginPage from '@/views/LoginPage'
 
 Vue.use(Router)
 
@@ -41,6 +42,11 @@ export default new Router({
       path: '/AdminPage',
       name: 'AdminPage',
       component: AdminPage
+    },
+    {
+      path: '/LoginPage',
+      name: 'LoginPage',
+      component: LoginPage
     }
   ]
 })
