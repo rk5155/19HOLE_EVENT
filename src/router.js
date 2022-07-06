@@ -22,7 +22,7 @@ const adminAuthority = (to, from, next) => {
     if (user.uid === 'ZngB0KUd6EMxh0rNArPYvA5rCQv1') {
       next()
     } else {
-      next({ name: 'LoginPage' })
+      next({ name: 'EventHome' })
     }
   })
 };
