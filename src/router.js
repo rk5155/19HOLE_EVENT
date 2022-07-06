@@ -41,6 +41,19 @@ const logindPermission = (to, from, next) => {
   })
 };
 
+// 未ログインのみ許可
+const notLogindPermission = (to, from, next) => {
+  const auth = getAuth()
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      next({ name: 'EventHome' })
+    } else {
+      next()
+    }
+  })
+};
+
 export default new Router({
   mode: 'history',
   routes: [
@@ -59,7 +72,8 @@ export default new Router({
     {
       path: '/SignUp',
       name: 'SignUp',
-      component: SignUp
+      component: SignUp,
+      beforeEnter: multiguard([notLogindPermission]),
     },
     {
       path: '/UserProfile',
