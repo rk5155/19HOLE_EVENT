@@ -14,8 +14,9 @@ export default {
       const auth = getAuth()
       signOut(auth)
         .then(() => {
-          console.log(auth)
-          alert('Success!')
+          this.$router.push('/')
+          // 一度リロードして、画面を更新
+          this.$router.go({path: '/', force: true})
         }).catch((error) => {
           console.log(error)
         })

@@ -37,10 +37,11 @@
 
 <script>
 import { collection, getDocs, getFirestore, updateDoc, doc, arrayUnion, getDoc, arrayRemove, deleteDoc, query, where } from "firebase/firestore";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { StripeCheckout } from '@vue-stripe/vue-stripe';
+import loginInformation from '../mixins/loginInformation'
 
 export default {
+  mixins: [loginInformation],
   components: {
     StripeCheckout,
   },
@@ -57,12 +58,6 @@ export default {
       successURL: `${location.protocol}//${location.host}/`,
       cancelURL: `${location.protocol}//${location.host}/`,
       events: [],
-      loginUserName: null,
-      loginUserEmail: null,
-      loginUserId: null,
-      loginUserEventsToAttend: null,
-      getFirestoreDb: null,
-      loginUserProfile: null
     }
   },
   created () {
@@ -76,35 +71,29 @@ export default {
       });
     }))
 
-    const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
-        this.loginUserName = user.displayName;
-        this.loginUserEmail = user.email;
-        this.loginUserId = user.uid
-        this.loginUserProfile = doc(this.getFirestoreDb, "users", this.loginUserId);
+    if (this.loginUserName) {
+      // User is signed in, see docs for a list of available properties
+      // https://firebase.google.com/docs/reference/js/firebase.User
+      this.loginUserProfile = doc(this.getFirestoreDb, "users", this.loginUserId);
 
-        if (location.search) {
-          const eventId = location.search.slice(1)
+      if (location.search) {
+        const eventId = location.search.slice(1)
 
-          updateDoc(this.loginUserProfile, {
-            eventsToAttend: arrayUnion(eventId)
-          })
+        updateDoc(this.loginUserProfile, {
+          eventsToAttend: arrayUnion(eventId)
+        })
 
-          const participationEvent = doc(this.getFirestoreDb, "events", eventId);
+        const participationEvent = doc(this.getFirestoreDb, "events", eventId);
 
-          updateDoc(participationEvent, {
-            eventParticiPants: arrayUnion(this.loginUserName)
-          })
-        }
-
-        getDoc(this.loginUserProfile).then((result) => {
-          this.loginUserEventsToAttend = result.data().eventsToAttend
+        updateDoc(participationEvent, {
+          eventParticiPants: arrayUnion(this.loginUserName)
         })
       }
-    })
+
+      getDoc(this.loginUserProfile).then((result) => {
+        this.loginUserEventsToAttend = result.data().eventsToAttend
+      })
+    }
   },
   methods: {
     participationFeePayment (eventId) {
