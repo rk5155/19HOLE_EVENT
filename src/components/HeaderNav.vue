@@ -12,6 +12,7 @@
           <router-link to="/eventCreation" class="nav-link">イベント作成</router-link>
           <router-link to="/AdminPage" class="nav-link">管理者</router-link>
           <router-link to="/LoginPage" class="nav-link">ログイン</router-link>
+          <router-link to="/LogOutPage" class="nav-link">ログアウト</router-link>
         </div>
       </div>
     </div>
