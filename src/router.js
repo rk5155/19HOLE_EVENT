@@ -10,20 +10,25 @@ import LoginPage from '@/views/LoginPage'
 import LogoutPage from '@/views/LogoutPage'
 import multiguard from "vue-router-multiguard";
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
+import { doc, getDoc, getFirestore } from 'firebase/firestore'
 
 
 Vue.use(Router)
 
-// 僕のアカウントのみ、管理者ページへのアクセスを許可
+// 管理者のアカウントのみ、管理者ページへのアクセスを許可
 const adminAuthority = (to, from, next) => {
   const auth = getAuth()
+  const db = getFirestore()
+
 
   onAuthStateChanged(auth, (user) => {
-    if (user.uid === 'ZngB0KUd6EMxh0rNArPYvA5rCQv1') {
-      next()
-    } else {
-      next({ name: 'EventHome' })
-    }
+    getDoc(doc(db, 'users', user.uid)).then(result => {
+      if (result.data().admin) {
+        next()
+      } else {
+        next({ name: 'EventHome' })
+      }
+    })
   })
 };
 
