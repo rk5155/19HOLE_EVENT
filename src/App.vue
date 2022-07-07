@@ -22,4 +22,10 @@ export default {
   width: 860px;
   margin: 30px auto;
 }
+@media screen and (max-width: 580px) {
+  #main {
+    width: 96%;
+    margin: 30px auto;
+  }
+}
 </style>

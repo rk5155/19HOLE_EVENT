@@ -1,24 +1,24 @@
 <template>
   <div class="events">
     <h1 class="eventsTitle">イベント一覧</h1>
-    {{currentUser.displayName}}
     <div class="eventList">
       <div v-for="(event, index) in events" :key="index" class="eventItem card text-dark bg-light mb-3">
-        <div class="card-header">開催日時: {{ event.timesDay }} {{event.playTime}}</div>
+        <div class="card-header">開催日時<br>{{ event.timesDay }} {{event.playTime}}</div>
         <div class="card-body">
           <h2 class="card-title">{{ event.eventName }}</h2>
-          <p class="card-text">会場: {{ event.venue }}</p>
-          <p class="card-text">締め切り: {{ event.deadline }}</p>
-          <p class="card-text">プレー日: {{ event.cost.toLocaleString() }}円</p>
-          <p class="card-text">キャンセル規定: {{ event.cancel }}</p>
-          <p class="card-text">組数: {{ event.numberOfPairs }}</p>
+          <p class="card-text">会場<br>{{ event.venue }}</p>
+          <p class="card-text">締め切り<br>{{ event.deadline }}</p>
+          <p class="card-text">プレー日<br>{{ event.cost.toLocaleString() }}円</p>
+          <p class="card-text">組数<br>{{ event.numberOfPairs }}</p>
+          <p class="card-text">キャンセル規定<br>{{ event.cancel }}</p>
+
           <template v-if="isEventToAttend(event.eventId)">
-            <p class="">このイベントに参加予定です</p>
-            <button class="btn btn-warning"><router-link :to="{ name: 'ChatRoom', params: { eventId: event.eventId }}">グループチャット</router-link></button>
-            <button class="btn btn-warning" @click="nonParticipationEvent(event.eventId)">不参加</button>
+            <p class="events__participation">このイベントに参加予定です</p>
+            <!-- <button class="btn btn-primary"><router-link :to="{ name: 'ChatRoom', params: { eventId: event.eventId }}">グループチャット</router-link></button> -->
+            <button class="btn btn-primary" @click="nonParticipationEvent(event.eventId)">不参加</button>
           </template>
-          <button v-else class="btn btn-warning" @click="participationFeePayment(event.eventId)">参加する</button>
-          <button v-if="currentUserData.admin" class="btn btn-warning" @click="eventDelete(event.eventId)">イベント削除</button>
+          <button v-else class="btn btn-primary" @click="participationFeePayment(event.eventId)">参加する</button>
+          <button v-if="currentUserData.admin" class="btn btn-primary" @click="eventDelete(event.eventId)">イベント削除</button>
         </div>
       </div>
     </div>
@@ -168,17 +168,18 @@ export default {
 
 .eventsTitle {
   font-size: 30px;
+  color: black;
   padding: 1rem 2rem;
-  color: #fff;
-  background-image: -webkit-gradient(linear, left top, right top, from(#fa709a), to(#fee140));
-  background-image: -webkit-linear-gradient(left, #fa709a 0%, #fee140 100%);
-  background-image: linear-gradient(to right, #fa709a 0%, #fee140 100%);
-  border-radius: 10px;
-  margin-bottom: 20px;
+  border-bottom: 6px double #000;
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 40px;
 }
 
-.card-title {
-  font-size: 26px;
+h2.card-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
 }
 
 .eventList {
@@ -188,5 +189,32 @@ export default {
 }
 .eventItem {
   width: 49%;
+}
+
+.btn.btn-primary {
+  color: white;
+  font-weight: bold;
+}
+
+.events__participation {
+  color: red;
+}
+@media screen and (max-width: 580px) {
+  .eventsTitle {
+    font-size: 24px;
+  }
+
+  .card-title {
+    font-size: 18px;
+  }
+
+  .eventItem {
+    font-size: 14px;
+    width: 100%;
+  }
+
+  .eventList {
+    display: block;
+  }
 }
 </style>

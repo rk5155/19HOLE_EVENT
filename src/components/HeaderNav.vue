@@ -1,30 +1,33 @@
 <template>
-  <b-navbar toggleable="lg" type="dark" variant="info">
-    <b-navbar-brand><router-link to="/" class="nav-link">19HOLE</router-link></b-navbar-brand>
+  <div class="header">
+    <b-navbar toggleable="lg" type="dark">
+      <b-navbar-brand><router-link to="/" class="nav-link">19HOLE</router-link></b-navbar-brand>
 
-    <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
-    <b-collapse id="nav-collapse" is-nav>
-      <b-navbar-nav>
-        <template v-if="isLoggedIn && currentUserData && currentUserData.admin">
-          <router-link to="/" class="nav-link">ホーム</router-link>
-          <router-link to="/AdminPage" class="nav-link">管理者</router-link>
-          <router-link to="/eventCreation" class="nav-link">イベント作成</router-link>
-          <router-link to="/LogOutPage" class="nav-link">ログアウト</router-link>
-        </template>
+      <b-collapse id="nav-collapse" is-nav>
+        <b-navbar-nav>
+          <template v-if="isLoggedIn && currentUserData && currentUserData.admin">
+            <router-link to="/" class="nav-link">ホーム</router-link>
+            <router-link to="/AdminPage" class="nav-link">管理者</router-link>
+            <router-link to="/eventCreation" class="nav-link">イベント作成</router-link>
+            <router-link to="/LogOutPage" class="nav-link">ログアウト</router-link>
+          </template>
 
-        <template v-else-if="isLoggedIn">
-          <router-link to="/" class="nav-link">ホーム</router-link>
-          <router-link to="/LogOutPage" class="nav-link">ログアウト</router-link>
-        </template>
+          <template v-else-if="isLoggedIn">
+            <router-link to="/" class="nav-link">ホーム</router-link>
+            <router-link to="/LogOutPage" class="nav-link">ログアウト</router-link>
+          </template>
 
-        <template v-else>
-          <router-link to="/SignUp" class="nav-link">新規登録</router-link>
-          <router-link to="/LoginPage" class="nav-link">ログイン</router-link>
-        </template>
-      </b-navbar-nav>
-    </b-collapse>
-  </b-navbar>
+          <template v-else>
+            <router-link to="/SignUp" class="nav-link">新規登録</router-link>
+            <router-link to="/LoginPage" class="nav-link">ログイン</router-link>
+          </template>
+        </b-navbar-nav>
+        <span class="header__userName">{{ currentUser.displayName }} さん</span>
+      </b-collapse>
+    </b-navbar> 
+  </div>
 </template>
 
 <script>
@@ -60,3 +63,31 @@ export default {
   }
 }
 </script>
+
+<style>
+.header {
+  background-color: black;
+  font-weight: bold;
+}
+.navbar {
+  width: 860px;
+  margin: 0 auto;
+}
+
+.navbar-nav a {
+  color: white;
+}
+
+.header__userName {
+  color: white;
+  width: 79%;
+  text-align: right;
+}
+
+@media screen and (max-width: 580px) {
+  .navbar {
+    width: 90%;
+    margin: 0 auto;
+  }
+}
+</style>
