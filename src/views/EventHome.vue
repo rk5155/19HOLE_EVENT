@@ -1,7 +1,7 @@
 <template>
   <div class="events">
     <h1 class="eventsTitle">イベント一覧</h1>
-    {{loginUserName}}
+    {{currentUser.displayName}}
     <div class="eventList">
       <div v-for="(event, index) in events" :key="index" class="eventItem card text-dark bg-light mb-3">
         <div class="card-header">開催日時: {{ event.timesDay }} {{event.playTime}}</div>
@@ -18,7 +18,7 @@
             <button class="btn btn-warning" @click="nonParticipationEvent(event.eventId)">不参加</button>
           </template>
           <button v-else class="btn btn-warning" @click="participationFeePayment(event.eventId)">参加する</button>
-          <button v-if="loginUserId === 'ZngB0KUd6EMxh0rNArPYvA5rCQv1'" class="btn btn-warning" @click="eventDelete(event.eventId)">イベント削除</button>
+          <button v-if="currentUser.uid === 'ZngB0KUd6EMxh0rNArPYvA5rCQv1'" class="btn btn-warning" @click="eventDelete(event.eventId)">イベント削除</button>
         </div>
       </div>
     </div>
@@ -29,7 +29,7 @@
       :line-items="lineItems"
       :success-url="successURL"
       :cancel-url="cancelURL"
-      :customerEmail='loginUserEmail'
+      :customerEmail='currentUser.email'
       @loading="v => loading = v"
     />
   </div>
@@ -38,10 +38,9 @@
 <script>
 import { collection, getDocs, getFirestore, updateDoc, doc, arrayUnion, getDoc, arrayRemove, deleteDoc, query, where } from "firebase/firestore";
 import { StripeCheckout } from '@vue-stripe/vue-stripe';
-import loginInformation from '../mixins/loginInformation'
+import firebaseUtils from '@/firebaseUtils'
 
 export default {
-  mixins: [loginInformation],
   components: {
     StripeCheckout,
   },
@@ -58,9 +57,22 @@ export default {
       successURL: `${location.protocol}//${location.host}/`,
       cancelURL: `${location.protocol}//${location.host}/`,
       events: [],
+      getFirestoreDb: null,
+      loginUserProfile: null,
+      loginUserEventsToAttend: null
+    }
+  },
+  computed: {
+    currentUser () {
+      return this.$store.getters.cuurentUser
+    },
+    isLoggedIn () {
+      return this.$store.getters.isLoggedIn
     }
   },
   created () {
+    firebaseUtils.onAuth()
+
     this.getFirestoreDb = getFirestore()
 
     getDocs(collection(this.getFirestoreDb, "events")).then((result => {
@@ -71,10 +83,10 @@ export default {
       });
     }))
 
-    if (this.loginUserName) {
+    if (this.isLoggedIn) {
       // User is signed in, see docs for a list of available properties
       // https://firebase.google.com/docs/reference/js/firebase.User
-      this.loginUserProfile = doc(this.getFirestoreDb, "users", this.loginUserId);
+      this.loginUserProfile = doc(this.getFirestoreDb, "users", this.currentUser.uid);
 
       if (location.search) {
         const eventId = location.search.slice(1)
@@ -86,7 +98,7 @@ export default {
         const participationEvent = doc(this.getFirestoreDb, "events", eventId);
 
         updateDoc(participationEvent, {
-          eventParticiPants: arrayUnion(this.loginUserName)
+          eventParticiPants: arrayUnion(this.currentUser.displayName)
         })
       }
 
@@ -109,7 +121,7 @@ export default {
         const nonParticipationEvent = doc(this.getFirestoreDb, "events", eventId);
 
         updateDoc(nonParticipationEvent, {
-          eventParticiPants: arrayRemove(this.loginUserName)
+          eventParticiPants: arrayRemove(this.currentUser.displayName)
         }).then(() => {
           updateDoc(this.loginUserProfile, {
             eventsToAttend: arrayRemove(eventId)
