@@ -8,7 +8,7 @@
       <div v-if="isDisplayHeader" class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
 
-          <template v-if="isLoggedIn && loginUserName === '川田隆稀'">
+          <template v-if="isLoggedIn && currentUser.displayName === '川田隆稀'">
             <router-link to="/" class="nav-link">ホーム</router-link>
             <router-link to="/AdminPage" class="nav-link">管理者</router-link>
             <router-link to="/eventCreation" class="nav-link">イベント作成</router-link>
@@ -31,9 +31,32 @@
 </template>
 
 <script>
-import loginInformation from '../mixins/loginInformation'
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import firebaseUtils from '@/firebaseUtils'
 
 export default {
-  mixins: [loginInformation]
+  data () {
+    return {
+      isDisplayHeader: false
+    }
+  },
+  computed: {
+    currentUser () {
+      return this.$store.getters.cuurentUser
+    },
+    isLoggedIn () {
+      return this.$store.getters.isLoggedIn
+    }
+  },
+  created () {
+    firebaseUtils.onAuth()
+
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        this.isDisplayHeader = true
+      }
+    })
+  }
 }
 </script>
