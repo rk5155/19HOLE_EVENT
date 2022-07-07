@@ -8,7 +8,7 @@
       <div v-if="isDisplayHeader" class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
 
-          <template v-if="isLoggedIn && currentUser.displayName === '川田隆稀'">
+          <template v-if="isLoggedIn && currentUserData && currentUserData.admin">
             <router-link to="/" class="nav-link">ホーム</router-link>
             <router-link to="/AdminPage" class="nav-link">管理者</router-link>
             <router-link to="/eventCreation" class="nav-link">イベント作成</router-link>
@@ -46,6 +46,9 @@ export default {
     },
     isLoggedIn () {
       return this.$store.getters.isLoggedIn
+    },
+    currentUserData () {
+      return this.$store.getters.currentUserData
     }
   },
   created () {

@@ -18,7 +18,7 @@
             <button class="btn btn-warning" @click="nonParticipationEvent(event.eventId)">不参加</button>
           </template>
           <button v-else class="btn btn-warning" @click="participationFeePayment(event.eventId)">参加する</button>
-          <button v-if="currentUser.uid === 'ZngB0KUd6EMxh0rNArPYvA5rCQv1'" class="btn btn-warning" @click="eventDelete(event.eventId)">イベント削除</button>
+          <button v-if="currentUserData.admin" class="btn btn-warning" @click="eventDelete(event.eventId)">イベント削除</button>
         </div>
       </div>
     </div>
@@ -68,6 +68,9 @@ export default {
     },
     isLoggedIn () {
       return this.$store.getters.isLoggedIn
+    },
+    currentUserData () {
+      return this.$store.getters.currentUserData
     }
   },
   created () {
