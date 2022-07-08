@@ -85,5 +85,9 @@
   .wayToParticipate__title {
     font-size: 24px;
   }
+
+  .wayToParticipateFlow__title {
+    font-size: 22px;
+  }
 }
 </style>
