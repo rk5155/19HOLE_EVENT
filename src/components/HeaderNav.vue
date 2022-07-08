@@ -24,7 +24,7 @@
             <router-link to="/LoginPage" class="nav-link">ログイン</router-link>
           </template>
         </b-navbar-nav>
-        <span class="header__userName">{{ currentUser.displayName }} さん</span>
+        <span v-if="currentUser.displayName" class="header__userName">{{ currentUser.displayName }} さん</span>
       </b-collapse>
     </b-navbar> 
   </div>
@@ -80,8 +80,11 @@ export default {
 
 .header__userName {
   color: white;
-  width: 79%;
   text-align: right;
+}
+
+.navbar-expand-lg .navbar-collapse {
+  justify-content: space-between;
 }
 
 @media screen and (max-width: 580px) {
