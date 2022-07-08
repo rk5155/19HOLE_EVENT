@@ -1,11 +1,10 @@
 <template>
-  <div class="signup">
-      <template>
-        <label for="">氏名</label>
-        <input v-model="name" type="text" class="form-control">
-        
-        <button @click="userProfileRegistration" class="btn btn-warning" type="button">登録する</button>
-      </template>
+  <div class="userProfile">
+    <template>
+      <input v-model="name" type="text" class="form-control userProfile__form" placeholder="氏名">
+      
+      <button @click="userProfileRegistration" class="btn btn-primary userProfile__button" type="button">登録する</button>
+    </template>
   </div>
 </template>
 
@@ -40,3 +39,14 @@ export default {
   }
 }
 </script>
+
+<style>
+.userProfile__form {
+  margin-bottom: 10px;
+}
+
+.userProfile__button {
+  text-align: center;
+  width: 100%;
+}
+</style>

@@ -1,15 +1,13 @@
 <template>
   <div class="signup">
-      <template>
-        <label for="">メールアドレス</label>
-        <input v-model="email" type="email" class="form-control" placeholder="メールアドレス" autocomplete="on">
-        <label for="">パスワード</label>
-        <input v-model="password" type="password" class="form-control form-control--margin" placeholder="パスワード" autocomplete="on">
-        <button @click="signUp" class="btn btn-warning" type="button">登録する</button>
-      </template>
-      <p class="signinError">
-        {{ errorMessage }}
-      </p>
+    <div>
+      <input v-model="email" type="email" class="form-control signup__form" placeholder="メールアドレス" autocomplete="on">
+      <input v-model="password" type="password" class="form-control form-control--margin signup__form" placeholder="パスワード" autocomplete="on">
+      <button @click="signUp" class="btn btn-primary signup__button" type="button">登録する</button>
+    </div>
+    <p class="signup__error">
+      {{ errorMessage }}
+    </p>
   </div>
 </template>
 
@@ -53,3 +51,19 @@ export default {
   }
 }
 </script>
+
+<style>
+.signup__form {
+  margin-bottom: 10px;
+}
+
+.signup__button {
+  text-align: center;
+  width: 100%;
+}
+
+.signup__error {
+  color: red;
+  margin-top: 10px;
+}
+</style>

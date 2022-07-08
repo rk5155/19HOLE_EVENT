@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <div class="loginPage">
     <div>
-      <input v-model="email" type="email" class="form-control" placeholder="メールアドレス" autocomplete="on">
-      <input v-model="password" type="password" class="form-control form-control--margin" placeholder="パスワード" autocomplete="on">
-      <button @click="login" class="btn btn-lg btn-block" type="button">ログイン</button>
+      <input v-model="email" type="email" class="form-control loginPage__form" placeholder="メールアドレス" autocomplete="on">
+      <input v-model="password" type="password" class="form-control form-control--margin loginPage__form" placeholder="パスワード" autocomplete="on">
+      <button @click="login" class="btn btn-primary loginPage__button" type="button">ログイン</button>
     </div>
     <div>
-      <p class="signinError">
+      <p class="loginPage__error">
         {{ errorMessage }}
       </p>
     </div>
@@ -44,3 +44,18 @@ export default {
 }
 </script>
 
+<style>
+.loginPage__form {
+  margin-bottom: 10px;
+}
+
+.loginPage__button {
+  text-align: center;
+  width: 100%;
+}
+
+.loginPage__error {
+  color: red;
+  margin-top: 10px;
+}
+</style>
