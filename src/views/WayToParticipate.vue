@@ -15,7 +15,8 @@
       </div>
 
       <div class="wayToParticipateFlow__wrapper">
-        <h2 class="wayToParticipateFlow__title">3, イベント一覧から参加したいイベントの参加ボタンを押す</h2>
+        <h2 class="wayToParticipateFlow__title">3, イベント一覧から参加したいイベントを選ぶ</h2>
+        <p>参加ボタンを押しましょう。</p>
         <img class="wayToParticipateFlow__img" src="@/assets/images/wayToParticipate/img3.png" alt="">
       </div>
 
