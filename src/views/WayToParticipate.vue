@@ -5,12 +5,14 @@
     <div class="wayToParticipateFlow">
       <div class="wayToParticipateFlow__wrapper">
         <h2 class="wayToParticipateFlow__title">1, メールアドレスを登録</h2>
+        <p>※登録は初回のみです。</p>
         <img class="wayToParticipateFlow__img" src="@/assets/images/wayToParticipate/img1.png" alt="">
         <a href="/SignUp" target="blank">こちらから登録できます。</a>
       </div>
 
       <div class="wayToParticipateFlow__wrapper">
         <h2 class="wayToParticipateFlow__title">2, 氏名を登録</h2>
+        <p>※登録は初回のみです。</p>
         <img class="wayToParticipateFlow__img" src="@/assets/images/wayToParticipate/img2.png" alt="">
       </div>
 
