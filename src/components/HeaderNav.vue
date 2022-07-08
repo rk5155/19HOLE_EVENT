@@ -9,6 +9,7 @@
         <b-navbar-nav>
           <template v-if="isLoggedIn && currentUserData && currentUserData.admin">
             <router-link to="/" class="nav-link">ホーム</router-link>
+            <router-link to="/WayToParticipate" class="nav-link">参加方法</router-link>
             <router-link to="/AdminPage" class="nav-link">管理者</router-link>
             <router-link to="/eventCreation" class="nav-link">イベント作成</router-link>
             <router-link to="/LogOutPage" class="nav-link">ログアウト</router-link>
@@ -16,12 +17,14 @@
 
           <template v-else-if="isLoggedIn">
             <router-link to="/" class="nav-link">ホーム</router-link>
+            <router-link to="/WayToParticipate" class="nav-link">参加方法</router-link>
             <router-link to="/LogOutPage" class="nav-link">ログアウト</router-link>
           </template>
 
           <template v-else>
             <router-link to="/SignUp" class="nav-link">新規登録</router-link>
             <router-link to="/LoginPage" class="nav-link">ログイン</router-link>
+            <router-link to="/WayToParticipate" class="nav-link">参加方法</router-link>
           </template>
         </b-navbar-nav>
         <span v-if="currentUser.displayName" class="header__userName">{{ currentUser.displayName }} さん</span>

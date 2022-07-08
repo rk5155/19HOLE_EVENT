@@ -8,6 +8,7 @@ import ChatRoom from '@/views/ChatRoom'
 import AdminPage from '@/views/AdminPage'
 import LoginPage from '@/views/LoginPage'
 import LogoutPage from '@/views/LogoutPage'
+import WayToParticipate from '@/views/WayToParticipate.vue'
 import multiguard from "vue-router-multiguard";
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { doc, getDoc, getFirestore } from 'firebase/firestore'
@@ -105,6 +106,11 @@ export default new Router({
       path: '/LogoutPage',
       name: 'LogoutPage',
       component: LogoutPage
+    },
+    {
+      path: '/WayToParticipate',
+      name: 'WayToParticipate',
+      component: WayToParticipate
     }
   ]
 })
