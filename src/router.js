@@ -67,7 +67,6 @@ export default new Router({
       path: '/',
       name: 'EventHome',
       component: EventHome,
-      beforeEnter: multiguard([logindPermission]),
     },
     {
       path: '/eventCreation',
@@ -95,7 +94,7 @@ export default new Router({
       path: '/AdminPage',
       name: 'AdminPage',
       component: AdminPage,
-      beforeEnter: multiguard([adminAuthority]),
+      beforeEnter: multiguard([adminAuthority, logindPermission]),
     },
     {
       path: '/LoginPage',

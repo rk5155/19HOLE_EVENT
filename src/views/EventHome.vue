@@ -18,7 +18,7 @@
             <button class="btn btn-primary" @click="nonParticipationEvent(event.eventId)">不参加</button>
           </template>
           <button v-else class="btn btn-primary" @click="participationFeePayment(event.eventId)">参加する</button>
-          <button v-if="currentUserData.admin" class="btn btn-primary" @click="eventDelete(event.eventId)">イベント削除</button>
+          <button v-if="currentUserData && currentUserData.admin" class="btn btn-primary" @click="eventDelete(event.eventId)">イベント削除</button>
         </div>
       </div>
     </div>
@@ -120,9 +120,13 @@ export default {
   },
   methods: {
     participationFeePayment (eventId) {
-      this.successURL = `${this.successURL}?${eventId}`
-      // You will be redirected to Stripe's secure checkout page
-      this.$refs.checkoutRef.redirectToCheckout();
+      if (this.isLoggedIn) {
+        this.successURL = `${this.successURL}?${eventId}`
+        // You will be redirected to Stripe's secure checkout page
+        this.$refs.checkoutRef.redirectToCheckout();
+      } else {
+        this.$router.push('/SignUp?notLogged')
+      }
     },
     isEventToAttend (eventId) {
       return this.loginUserEventsToAttend && this.loginUserEventsToAttend.includes(eventId)

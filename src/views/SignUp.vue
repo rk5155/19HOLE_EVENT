@@ -1,5 +1,9 @@
 <template>
   <div class="signup">
+    <div v-if="notLoggedIn" class="signup__notLoggedIn">
+      <p>イベント参加には登録が必要です。</p>
+    </div>  
+
     <div>
       <input v-model="email" type="email" class="form-control signup__form" placeholder="メールアドレス" autocomplete="on">
       <input v-model="password" type="password" class="form-control form-control--margin signup__form" placeholder="パスワード" autocomplete="on">
@@ -8,6 +12,7 @@
     <p class="signup__error">
       {{ errorMessage }}
     </p>
+    <p>登録済の場合は<router-link to="/LoginPage" class="">ログイン</router-link></p>
   </div>
 </template>
 
@@ -22,6 +27,11 @@ export default {
       errorMessage: '',
       name: null
     }
+  },
+  computed: {
+    notLoggedIn () {
+      return location.search
+    },
   },
   methods: {
     signUp: function () {
@@ -65,5 +75,9 @@ export default {
 .signup__error {
   color: red;
   margin-top: 10px;
+}
+
+.signup__notLoggedIn {
+  color: red;
 }
 </style>
