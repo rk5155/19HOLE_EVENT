@@ -25,8 +25,8 @@
     <stripe-checkout
       ref="checkoutRef"
       mode="payment"
-      :pk="publishableTestKey"
-      :line-items="lineTestItems"
+      :pk="publishableKey"
+      :line-items="lineItems"
       :success-url="successURL"
       :cancel-url="cancelURL"
       :customerEmail='currentUser.email'
