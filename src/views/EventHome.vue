@@ -114,7 +114,7 @@ export default {
       }
 
       getDoc(this.loginUserProfile).then((result) => {
-        this.loginUserEventsToAttend = result.data().eventsToAttend
+        if (result.data()) this.loginUserEventsToAttend = result.data().eventsToAttend
       })
     }
   },
