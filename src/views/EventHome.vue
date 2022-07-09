@@ -7,6 +7,8 @@
           <h2 class="card-title">{{ event.eventName }}</h2>
         </div>
         <div class="card-body">
+          <p v-if="event.numberOfPeople > event.eventParticiPants.length" class="eventList__situation">募集中です！</p>
+          <p v-else class="eventList__situation">このイベントは満員です。</p>
 
           <h3 class="card-text">開催日時</h3>
           <p class="eventList__text">{{ event.timesDay }} {{event.playTime}}</p>
@@ -231,7 +233,7 @@ h2.card-title {
   font-weight: bold;
 }
 
-.events__participation {
+.events__participation, .eventList__situation {
   color: red;
 }
 

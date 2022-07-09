@@ -34,6 +34,11 @@
       </div>
 
       <div class="form-group">
+        <label for="exampleFormControlTextarea1">人数</label>
+        <input v-model.number="numberOfPeople" type="number" class="form-control">
+      </div>
+
+      <div class="form-group">
         <label for="exampleFormControlTextarea1">締め切り</label>
         <input v-model="deadline" type="date" class="form-control">
       </div>
@@ -62,12 +67,13 @@ export default {
       cost: null,
       cancel: null,
       numberOfPairs: null,
-      playTime: null
+      playTime: null,
+      numberOfPeople: null
     }
   },
   computed: {
     emptyCheck () {
-      if (this.eventName && this.venue && this.timesDay && this.deadline && this.cost && this.cancel && this.numberOfPairs && this.playTime) {
+      if (this.eventName && this.venue && this.timesDay && this.deadline && this.cost && this.cancel && this.numberOfPairs && this.playTime && this.numberOfPeople) {
         return true
       } else {
         return false
@@ -89,15 +95,9 @@ export default {
             cancel: this.cancel,
             numberOfPairs: this.numberOfPairs,
             playTime: this.playTime,
+            numberOfPeople: this.numberOfPeople
           }).then((result) => {
-            this.eventName = null
-            this.venue  = null
-            this.timesDay = null
-            this.deadline = null
-            this.cost = null
-            this.cancel = null
-            this.numberOfPairs = null
-            this.playTime = null
+            this.eventName = this.venue = this.timesDay = this.deadline = this.cost = this.cancel = this.numberOfPairs = this.playTime = this.numberOfPeople = null
 
             const realTimedb = getDatabase()
             // イベントチャットルームを作成
