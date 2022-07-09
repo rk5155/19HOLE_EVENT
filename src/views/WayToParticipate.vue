@@ -7,7 +7,7 @@
         <h2 class="wayToParticipateFlow__title">1, メールアドレスを登録</h2>
         <p>※登録は初回のみです。</p>
         <img class="wayToParticipateFlow__img" src="@/assets/images/wayToParticipate/img1.png" alt="">
-        <a href="/SignUp" target="blank">こちらから登録できます。</a>
+        <router-link to="/SignUp">こちらから登録できます。</router-link>
       </div>
 
       <div class="wayToParticipateFlow__wrapper">
