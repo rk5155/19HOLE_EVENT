@@ -30,7 +30,7 @@ export default {
   },
   computed: {
     notLoggedIn () {
-      return location.search
+      return location.search === '?notLogged'
     },
   },
   methods: {

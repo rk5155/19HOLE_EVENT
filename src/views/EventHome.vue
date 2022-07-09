@@ -120,10 +120,12 @@ export default {
   },
   methods: {
     participationFeePayment (eventId) {
-      if (this.isLoggedIn) {
+      if (this.isLoggedIn && this.currentUser.displayName) {
         this.successURL = `${this.successURL}?${eventId}`
         // You will be redirected to Stripe's secure checkout page
         this.$refs.checkoutRef.redirectToCheckout();
+      } else if (this.isLoggedIn && !this.currentUser.displayName) {
+        this.$router.push('/UserProfile?nameNotRegistered')
       } else {
         this.$router.push('/SignUp?notLogged')
       }

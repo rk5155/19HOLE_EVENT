@@ -1,5 +1,9 @@
 <template>
   <div class="userProfile">
+    <div v-if="nameNotRegistered" class="userProfile__nameNotRegistered">
+      <p>イベント参加には氏名の登録が必要です。</p>
+    </div>  
+
     <template>
       <input v-model="name" type="text" class="form-control userProfile__form" placeholder="氏名">
       
@@ -17,6 +21,11 @@ export default {
     return {
       name: null,
     }
+  },
+  computed: {
+    nameNotRegistered () {
+      return location.search === '?nameNotRegistered'
+    },
   },
   methods: {
     userProfileRegistration: function () {
@@ -48,5 +57,9 @@ export default {
 .userProfile__button {
   text-align: center;
   width: 100%;
+}
+
+.userProfile__nameNotRegistered {
+  color: red;
 }
 </style>
