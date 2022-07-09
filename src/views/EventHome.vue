@@ -1,24 +1,38 @@
 <template>
   <div class="events">
-    <h1 class="eventsTitle">イベント一覧</h1>
+    <h1 class="events__title">イベント一覧</h1>
     <div class="eventList">
       <div v-for="(event, index) in events" :key="index" class="eventItem card text-dark bg-light mb-3">
-        <div class="card-header">開催日時<br>{{ event.timesDay }} {{event.playTime}}</div>
-        <div class="card-body">
+        <div class="card-header">
           <h2 class="card-title">{{ event.eventName }}</h2>
-          <p class="card-text">会場<br>{{ event.venue }}</p>
-          <p class="card-text">締め切り<br>{{ event.deadline }}</p>
-          <p class="card-text">プレー日<br>{{ event.cost.toLocaleString() }}円</p>
-          <p class="card-text">組数<br>{{ event.numberOfPairs }}</p>
-          <p class="card-text">キャンセル規定<br>{{ event.cancel }}</p>
+        </div>
+        <div class="card-body">
+
+          <h3 class="card-text">開催日時</h3>
+          <p class="eventList__text">{{ event.timesDay }} {{event.playTime}}</p>
+
+          <h3 class="card-text">会場</h3>
+          <p class="eventList__text">{{ event.venue }}</p>
+
+          <h3 class="card-text">締め切り</h3>
+          <p class="eventList__text">{{ event.deadline }}</p>
+
+          <h3 class="card-text">プレー料金</h3>
+          <p class="eventList__text">{{ event.cost.toLocaleString() }}円</p>
+
+          <h3 class="card-text">組数</h3>
+          <p class="eventList__text">{{ event.numberOfPairs }}</p>
+
+          <h3 class="card-text">キャンセル規定</h3>
+          <p class="eventList__text">{{ event.cancel }}</p>
 
           <template v-if="isEventToAttend(event.eventId)">
             <p class="events__participation">このイベントに参加予定です</p>
             <!-- <button class="btn btn-primary"><router-link :to="{ name: 'ChatRoom', params: { eventId: event.eventId }}">グループチャット</router-link></button> -->
-            <button class="btn btn-primary" @click="nonParticipationEvent(event.eventId)">不参加</button>
+            <button class="btn btn-primary eventList__btn" @click="nonParticipationEvent(event.eventId)">不参加</button>
           </template>
-          <button v-else class="btn btn-primary" @click="participationFeePayment(event.eventId)">参加する</button>
-          <button v-if="currentUserData && currentUserData.admin" class="btn btn-primary" @click="eventDelete(event.eventId)">イベント削除</button>
+          <button v-else class="btn btn-primary eventList__btn" @click="participationFeePayment(event.eventId)">参加する</button>
+          <button v-if="currentUserData && currentUserData.admin" class="btn btn-primary eventList__btn eventList__btn--margin" @click="eventDelete(event.eventId)">イベント削除</button>
         </div>
       </div>
     </div>
@@ -180,7 +194,7 @@ export default {
 
 <style>
 
-.eventsTitle {
+.events__title {
   font-size: 30px;
   color: black;
   padding: 1rem 2rem;
@@ -191,9 +205,14 @@ export default {
 }
 
 h2.card-title {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: bold;
-  margin-bottom: 20px;
+  margin: 10px 0;
+}
+
+.card-text {
+  font-size: 18px;
+  font-weight: bold;
 }
 
 .eventList {
@@ -201,8 +220,10 @@ h2.card-title {
   flex-wrap: wrap;
   justify-content: space-between;
 }
+
 .eventItem {
   width: 49%;
+  font-size: 16px;
 }
 
 .btn.btn-primary {
@@ -213,8 +234,20 @@ h2.card-title {
 .events__participation {
   color: red;
 }
+
+.eventList__btn {
+  width: 100%;
+}
+
+.eventList__btn--margin {
+  margin-top: 10px;
+}
+
+.eventList__text {
+  margin-bottom: 30px;
+}
 @media screen and (max-width: 580px) {
-  .eventsTitle {
+  .events__title {
     font-size: 24px;
   }
 
@@ -223,7 +256,6 @@ h2.card-title {
   }
 
   .eventItem {
-    font-size: 14px;
     width: 100%;
   }
 
