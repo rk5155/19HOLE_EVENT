@@ -55,6 +55,7 @@
 import { collection, getDocs, getFirestore, updateDoc, doc, arrayUnion, getDoc, arrayRemove, deleteDoc, query, where } from "firebase/firestore";
 import { StripeCheckout } from '@vue-stripe/vue-stripe';
 import firebaseUtils from '@/firebaseUtils'
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
 
 export default {
   components: {
@@ -110,10 +111,11 @@ export default {
       });
     }))
 
-    if (this.isLoggedIn) {
+    const auth = getAuth()
+    onAuthStateChanged(auth, (user) => {
       // User is signed in, see docs for a list of available properties
       // https://firebase.google.com/docs/reference/js/firebase.User
-      this.loginUserProfile = doc(this.getFirestoreDb, "users", this.currentUser.uid);
+      this.loginUserProfile = doc(this.getFirestoreDb, "users", user.uid);
 
       if (location.search) {
         const eventId = location.search.slice(1)
@@ -125,14 +127,14 @@ export default {
         const participationEvent = doc(this.getFirestoreDb, "events", eventId);
 
         updateDoc(participationEvent, {
-          eventParticiPants: arrayUnion(this.currentUser.displayName)
+          eventParticiPants: arrayUnion(user.displayName)
         })
       }
 
       getDoc(this.loginUserProfile).then((result) => {
         if (result.data()) this.loginUserEventsToAttend = result.data().eventsToAttend
       })
-    }
+    })
   },
   methods: {
     participationFeePayment (eventId) {
