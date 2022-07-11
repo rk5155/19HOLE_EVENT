@@ -11,7 +11,7 @@
           <p v-else class="eventList__situation">このイベントは満員です。</p>
 
           <h3 class="card-text">開催日時</h3>
-          <p class="eventList__text">{{ event.timesDay }} {{event.playTime}}</p>
+          <p class="eventList__text">{{ event.timesDay }} ({{ getDayOfWeek(event.timesDay) }}) {{event.playTime}}</p>
 
           <h3 class="card-text">会場</h3>
           <p class="eventList__text">{{ event.venue }}</p>
@@ -194,6 +194,10 @@ export default {
               })
           })
       }
+    },
+    getDayOfWeek (timesDayEvent) {
+      const week = ['日', '月', '火', '水', '木', '金', '土']
+      return week[new Date(timesDayEvent).getDay()]
     }
   },
 }
