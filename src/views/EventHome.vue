@@ -115,7 +115,13 @@ export default {
     onAuthStateChanged(auth, (user) => {
       // User is signed in, see docs for a list of available properties
       // https://firebase.google.com/docs/reference/js/firebase.User
-      this.loginUserProfile = doc(this.getFirestoreDb, "users", user.uid);
+      if (user) {
+        this.loginUserProfile = doc(this.getFirestoreDb, "users", user.uid);
+
+        getDoc(this.loginUserProfile).then((result) => {
+          if (result.data()) this.loginUserEventsToAttend = result.data().eventsToAttend
+        })
+      }
 
       if (location.search) {
         const eventId = location.search.slice(1)
@@ -130,10 +136,6 @@ export default {
           eventParticiPants: arrayUnion(user.displayName)
         })
       }
-
-      getDoc(this.loginUserProfile).then((result) => {
-        if (result.data()) this.loginUserEventsToAttend = result.data().eventsToAttend
-      })
     })
   },
   methods: {
