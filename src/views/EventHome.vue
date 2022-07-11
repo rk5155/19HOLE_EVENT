@@ -31,6 +31,7 @@
           <template v-if="isEventToAttend(event.eventId)">
             <p class="events__participation">このイベントに参加予定です</p>
             <!-- <button class="btn btn-primary"><router-link :to="{ name: 'ChatRoom', params: { eventId: event.eventId }}">グループチャット</router-link></button> -->
+            <p>参加メンバーと<a :href="event.openChat" target="_blank" rel="noopener noreferrer">オープンチャット</a>でやりとりしましょう！</p>
             <button class="btn btn-primary eventList__btn" @click="nonParticipationEvent(event.eventId)">不参加</button>
           </template>
           <button v-else class="btn btn-primary eventList__btn" @click="participationFeePayment(event.eventId)">参加する</button>

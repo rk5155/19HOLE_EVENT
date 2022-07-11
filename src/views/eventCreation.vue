@@ -44,6 +44,11 @@
       </div>
 
       <div class="form-group">
+        <label for="exampleFormControlTextarea1">オープンチャット</label>
+        <input v-model="openChat" type="text" class="form-control">
+      </div>
+
+      <div class="form-group">
         <label for="exampleFormControlTextarea1">キャンセル規定</label>
         <input v-model="cancel" type="text" class="form-control">
       </div>
@@ -68,12 +73,13 @@ export default {
       cancel: null,
       numberOfPairs: null,
       playTime: null,
-      numberOfPeople: null
+      numberOfPeople: null,
+      openChat: null,
     }
   },
   computed: {
     emptyCheck () {
-      if (this.eventName && this.venue && this.timesDay && this.deadline && this.cost && this.cancel && this.numberOfPairs && this.playTime && this.numberOfPeople) {
+      if (this.eventName && this.venue && this.timesDay && this.deadline && this.cost && this.cancel && this.numberOfPairs && this.playTime && this.numberOfPeople && this.openChat) {
         return true
       } else {
         return false
@@ -95,9 +101,11 @@ export default {
             cancel: this.cancel,
             numberOfPairs: this.numberOfPairs,
             playTime: this.playTime,
-            numberOfPeople: this.numberOfPeople
+            numberOfPeople: this.numberOfPeople,
+            openChat: this.openChat,
+            eventParticiPants: []
           }).then((result) => {
-            this.eventName = this.venue = this.timesDay = this.deadline = this.cost = this.cancel = this.numberOfPairs = this.playTime = this.numberOfPeople = null
+            this.eventName = this.venue = this.timesDay = this.deadline = this.cost = this.cancel = this.numberOfPairs = this.playTime = this.numberOfPeople = this.openChat = null
 
             const realTimedb = getDatabase()
             // イベントチャットルームを作成
