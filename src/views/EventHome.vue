@@ -29,10 +29,10 @@
           <p class="eventList__text">{{ event.cancel }}</p>
 
           <template v-if="isEventToAttend(event.eventId)">
-            <p class="events__participation">このイベントに参加予定です</p>
+            <p class="events__participation">このイベントに参加予定です！<br>参加メンバーとオープンチャットでやりとりしましょう！</p>
             <!-- <button class="btn btn-primary"><router-link :to="{ name: 'ChatRoom', params: { eventId: event.eventId }}">グループチャット</router-link></button> -->
-            <p>参加メンバーと<a :href="event.openChat" target="_blank" rel="noopener noreferrer">オープンチャット</a>でやりとりしましょう！</p>
-            <button class="btn btn-primary eventList__btn" @click="nonParticipationEvent(event.eventId)">不参加</button>
+            <button :href="event.openChat" class="btn btn-primary eventList__btn">オープンチャットに参加する</button>
+            <button class="btn btn-primary eventList__btn eventList__btn--margin" @click="nonParticipationEvent(event.eventId)">不参加</button>
           </template>
           <button v-else class="btn btn-primary eventList__btn" @click="participationFeePayment(event.eventId)">参加する</button>
           <button v-if="currentUserData && currentUserData.admin" class="btn btn-primary eventList__btn eventList__btn--margin" @click="eventDelete(event.eventId)">イベント削除</button>
@@ -42,8 +42,8 @@
     <stripe-checkout
       ref="checkoutRef"
       mode="payment"
-      :pk="publishableKey"
-      :line-items="lineItems"
+      :pk="publishableTestKey"
+      :line-items="lineTestItems"
       :success-url="successURL"
       :cancel-url="cancelURL"
       :customerEmail='currentUser.email'
