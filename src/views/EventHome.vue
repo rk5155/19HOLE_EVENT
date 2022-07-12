@@ -1,6 +1,7 @@
 <template>
   <div class="events">
     <h1 class="events__title">イベント一覧</h1>
+    <p>{{ eventTotalNumber }}件</p>
     <div class="eventList">
       <div v-for="(event, index) in events" :key="index" class="eventItem card text-dark bg-light mb-3">
         <div class="card-header">
@@ -100,6 +101,15 @@ export default {
     },
     currentUserData () {
       return this.$store.getters.currentUserData
+    },
+    eventTotalNumber () {
+      let eventTotalNumber = this.events.length
+
+      if (eventTotalNumber !== 0) {
+        return eventTotalNumber
+      } else {
+        return null
+      }
     }
   },
   created () {
