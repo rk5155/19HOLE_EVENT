@@ -8,7 +8,7 @@
           <h2 class="card-title">{{ event.eventName }}</h2>
         </div>
         <div class="card-body">
-          <p v-if="event.numberOfPeople > event.eventParticiPants.length" class="eventList__situation">募集中です！</p>
+          <p v-if="isEventCrowded(event)" class="eventList__situation">募集中です！</p>
           <p v-else class="eventList__situation">このイベントは満員です。</p>
 
           <h3 class="card-text">開催日時</h3>
@@ -38,7 +38,7 @@
             <a :href="event.openChat" target="_blank" class="btn btn-primary eventList__btn">オープンチャットに参加する</a>
             <button class="btn btn-primary eventList__btn eventList__btn--margin" @click="nonParticipationEvent(event.eventId)">不参加</button>
           </template>
-          <button v-else class="btn btn-primary eventList__btn" @click="participationFeePayment(event.eventId)">参加する</button>
+          <button v-else-if="isEventCrowded(event)" class="btn btn-primary eventList__btn" @click="participationFeePayment(event.eventId)">参加する</button>
           <button v-if="currentUserData && currentUserData.admin" class="btn btn-primary eventList__btn eventList__btn--margin" @click="eventDelete(event.eventId)">イベント削除</button>
         </div>
       </div>
@@ -220,6 +220,9 @@ export default {
     getDayOfWeek (timesDayEvent) {
       const week = ['日', '月', '火', '水', '木', '金', '土']
       return week[new Date(timesDayEvent).getDay()]
+    },
+    isEventCrowded (event) {
+      return event.numberOfPeople > event.eventParticiPants.length
     }
   },
 }
