@@ -20,12 +20,11 @@ export default {
 <style>
 #main {
   width: 860px;
-  margin: 30px auto;
+  margin: 86px auto;
 }
 @media screen and (max-width: 580px) {
   #main {
     width: 96%;
-    margin: 30px auto;
   }
 }
 </style>

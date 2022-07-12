@@ -111,5 +111,8 @@ export default new Router({
       name: 'WayToParticipate',
       component: WayToParticipate
     }
-  ]
+  ],
+  scrollBehavior () {
+    return { x: 0, y: 0 }
+  }
 })

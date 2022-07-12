@@ -71,6 +71,10 @@ export default {
 .header {
   background-color: black;
   font-weight: bold;
+  position: fixed;
+  width: 100%;
+  z-index: 1;
+  top: 0;
 }
 .navbar {
   width: 860px;

@@ -1,5 +1,5 @@
 <template>
-  <div class="wayToParticipate">
+  <div id="wayToParticipate" class="wayToParticipate">
     <h1 class="wayToParticipate__title">イベント参加方法</h1>
 
     <div class="wayToParticipateFlow">
