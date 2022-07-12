@@ -22,8 +22,11 @@
           <h3 class="card-text">プレー料金</h3>
           <p class="eventList__text">{{ event.cost.toLocaleString() }}円</p>
 
-          <h3 class="card-text">組数</h3>
-          <p class="eventList__text">{{ event.numberOfPairs }}</p>
+          <h3 class="card-text">都道府県</h3>
+          <p class="eventList__text">{{ event.prefectures }}</p>
+
+          <h3 class="card-text">募集人数</h3>
+          <p class="eventList__text">{{ event.numberOfPeople }}人</p>
 
           <h3 class="card-text">キャンセル規定</h3>
           <p class="eventList__text">{{ event.cancel }}</p>

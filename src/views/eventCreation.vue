@@ -29,8 +29,16 @@
       </div>
 
       <div class="form-group">
-        <label for="exampleFormControlTextarea1">組数</label>
-        <input v-model.number="numberOfPairs" type="number" class="form-control">
+        <label for="exampleFormControlTextarea1">会場のある都道府県</label>
+        <select v-model="prefectures" class="form-select" aria-label="Default select example">
+          <option value="茨城県">茨城県</option>
+          <option value="栃木県">栃木県</option>
+          <option value="群馬県">群馬県</option>
+          <option value="埼玉県">埼玉県</option>
+          <option value="千葉県">千葉県</option>
+          <option value="東京都">東京都</option>
+          <option value="神奈川県">神奈川県</option>
+        </select>
       </div>
 
       <div class="form-group">
@@ -71,7 +79,7 @@ export default {
       deadline: null,
       cost: null,
       cancel: null,
-      numberOfPairs: null,
+      prefectures: null,
       playTime: null,
       numberOfPeople: null,
       openChat: null,
@@ -79,7 +87,7 @@ export default {
   },
   computed: {
     emptyCheck () {
-      if (this.eventName && this.venue && this.timesDay && this.deadline && this.cost && this.cancel && this.numberOfPairs && this.playTime && this.numberOfPeople && this.openChat) {
+      if (this.eventName && this.venue && this.timesDay && this.deadline && this.cost && this.cancel && this.prefectures && this.playTime && this.numberOfPeople && this.openChat) {
         return true
       } else {
         return false
@@ -99,13 +107,13 @@ export default {
             deadline: this.deadline,
             cost: this.cost,
             cancel: this.cancel,
-            numberOfPairs: this.numberOfPairs,
+            prefectures: this.prefectures,
             playTime: this.playTime,
             numberOfPeople: this.numberOfPeople,
             openChat: this.openChat,
             eventParticiPants: []
           }).then((result) => {
-            this.eventName = this.venue = this.timesDay = this.deadline = this.cost = this.cancel = this.numberOfPairs = this.playTime = this.numberOfPeople = this.openChat = null
+            this.eventName = this.venue = this.timesDay = this.deadline = this.cost = this.cancel = this.prefectures = this.playTime = this.numberOfPeople = this.openChat = null
 
             const realTimedb = getDatabase()
             // イベントチャットルームを作成
