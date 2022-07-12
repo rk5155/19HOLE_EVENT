@@ -105,11 +105,20 @@ export default {
     this.getFirestoreDb = getFirestore()
 
     getDocs(collection(this.getFirestoreDb, "events")).then((result => {
+      let eventArray = []
+
       result.forEach((event) => {
         let eventData = event.data()
+
         eventData.eventId = event.id
-        this.events.push(eventData)
+        eventArray.push(eventData)
       });
+
+      // イベントを日付順に並び替える
+      this.events = 
+      eventArray.sort((a, b) => {
+        return (a.timesDay < b.timesDay) ? -1 : 1;
+      })
     }))
 
     const auth = getAuth()
