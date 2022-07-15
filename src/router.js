@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import EventHome from '@/views/EventHome'
+import EventDetail from '@/views/EventDetail'
 import eventCreation from '@/views/eventCreation'
 import SignUp from '@/views/SignUp'
 import UserProfile from '@/views/UserProfile'
@@ -67,6 +68,12 @@ export default new Router({
       path: '/',
       name: 'EventHome',
       component: EventHome,
+    },
+    {
+      path: '/EventDetail/:eventId',
+      name: 'EventDetail',
+      component: EventDetail,
+      props: true
     },
     {
       path: '/eventCreation',

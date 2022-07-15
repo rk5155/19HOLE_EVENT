@@ -3,34 +3,16 @@
     <h1 class="events__title">イベント一覧</h1>
     <p>{{ eventTotalNumber }}件</p>
     <div class="eventList">
-      <div v-for="(event, index) in events" :key="index" class="eventItem card text-dark bg-light mb-3">
-        <div class="card-header">
-          <h2 class="card-title">{{ event.eventName }}</h2>
-        </div>
+      <div v-for="(event, index) in events" :key="index" class="card eventItem">
+        <img src="@/assets/images/sample.png" class="card-img-top">
         <div class="card-body">
           <p v-if="isEventCrowded(event)" class="eventList__situation">募集中です！</p>
           <p v-else class="eventList__situation">このイベントは満員です。</p>
 
-          <h3 class="card-text">開催日時</h3>
-          <p class="eventList__text">{{ event.timesDay }} ({{ getDayOfWeek(event.timesDay) }}) {{event.playTime}}</p>
-
-          <h3 class="card-text">会場</h3>
-          <p class="eventList__text">{{ event.venue }}</p>
-
-          <h3 class="card-text">締め切り</h3>
-          <p class="eventList__text">{{ event.deadline }}</p>
-
-          <h3 class="card-text">プレー料金</h3>
-          <p class="eventList__text">{{ event.cost.toLocaleString() }}円</p>
-
-          <h3 class="card-text">都道府県</h3>
-          <p class="eventList__text">{{ event.prefectures }}</p>
-
-          <h3 class="card-text">募集人数</h3>
-          <p class="eventList__text">{{ event.numberOfPeople }}人</p>
-
-          <h3 class="card-text">キャンセル規定</h3>
-          <p class="eventList__text">{{ event.cancel }}</p>
+          <span>{{ event.timesDay }}({{ getDayOfWeek(event.timesDay) }}) {{ event.playTime }} スタート！</span>
+          <span>{{ event.prefectures }}</span>
+          <h2 class="card-text">{{ event.eventName }}</h2>
+          <router-link :to="{ name: 'EventDetail', params: { eventId: event.eventId, event: event }}" class="btn btn-primary eventList__btn">詳細を見る</router-link>
 
           <template v-if="isEventToAttend(event.eventId)">
             <p class="events__participation">このイベントに参加予定です！<br>参加メンバーとオープンチャットでやりとりしましょう！</p>
@@ -38,54 +20,22 @@
             <a :href="event.openChat" target="_blank" class="btn btn-primary eventList__btn">オープンチャットに参加する</a>
             <button class="btn btn-primary eventList__btn eventList__btn--margin" @click="nonParticipationEvent(event.eventId)">不参加</button>
           </template>
-          <button v-else-if="isEventCrowded(event)" class="btn btn-primary eventList__btn" @click="participationFeePayment(event.eventId)">参加する</button>
+
           <button v-if="currentUserData && currentUserData.admin" class="btn btn-primary eventList__btn eventList__btn--margin" @click="eventDelete(event.eventId)">イベント削除</button>
         </div>
       </div>
     </div>
-    <stripe-checkout
-      ref="checkoutRef"
-      mode="payment"
-      :pk="publishableKey"
-      :line-items="lineItems"
-      :success-url="successURL"
-      :cancel-url="cancelURL"
-      :customerEmail='currentUser.email'
-      @loading="v => loading = v"
-    />
   </div>
 </template>
 
 <script>
 import { collection, getDocs, getFirestore, updateDoc, doc, arrayUnion, getDoc, arrayRemove, deleteDoc, query, where } from "firebase/firestore";
-import { StripeCheckout } from '@vue-stripe/vue-stripe';
 import firebaseUtils from '@/firebaseUtils'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 
 export default {
-  components: {
-    StripeCheckout,
-  },
   data () {
-    this.publishableKey = 'pk_live_51Ko2ckHIT4Uh5KIjb0UXJHWVs2vpbCAmF152Vw5C0QqeVm2SBC4TcVET1guSf3Poz8subJBE6RujxgkZGvoA6fa300smCFrF7F'
-    this.publishableTestKey = 'pk_test_51Ko2ckHIT4Uh5KIjqI6JgyPkIoI7oGeNSld2MBeKEtpUdCpj4lwyjtPDqwQtbOPgH0SZxB2XCixr2Wx1rUFwUmJc00RJloQKEG'
-
     return {
-      loading: false,
-      lineItems: [
-        {
-          price: 'price_1LFxrlHIT4Uh5KIjNMhUVsJe', // The id of the one-time price you created in your Stripe dashboard
-          quantity: 1,
-        },
-      ],
-      lineTestItems: [
-        {
-          price: 'price_1LFxtCHIT4Uh5KIj2oJQQmS6',
-          quantity: 1,
-        },
-      ],
-      successURL: `${location.protocol}//${location.host}/`,
-      cancelURL: `${location.protocol}//${location.host}/`,
       events: [],
       getFirestoreDb: null,
       loginUserProfile: null,
@@ -162,17 +112,6 @@ export default {
     })
   },
   methods: {
-    participationFeePayment (eventId) {
-      if (this.isLoggedIn && this.currentUser.displayName) {
-        this.successURL = `${this.successURL}?${eventId}`
-        // You will be redirected to Stripe's secure checkout page
-        this.$refs.checkoutRef.redirectToCheckout();
-      } else if (this.isLoggedIn && !this.currentUser.displayName) {
-        this.$router.push('/UserProfile?nameNotRegistered')
-      } else {
-        this.$router.push('/SignUp?notLogged')
-      }
-    },
     isEventToAttend (eventId) {
       return this.loginUserEventsToAttend && this.loginUserEventsToAttend.includes(eventId)
     },
