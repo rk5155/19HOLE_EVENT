@@ -61,6 +61,12 @@
         <input v-model="cancel" type="text" class="form-control">
       </div>
 
+      <div class="form-group">
+        <input @change="selectedFile" type="file" class="custom-file-input">
+        <label class="custom-file-label" for="inputFile" data-browse="参照">ファイルを選択(ここにドロップすることもできます)</label>
+      </div>
+      <!-- <button @click.prevent="upload()">画像</button> -->
+
       <button @click="postEvent" type="button">イベント追加</button>
     </form>
   </div>
@@ -68,7 +74,8 @@
 
 <script>
 import { collection, addDoc, getFirestore } from "firebase/firestore";
-import { getDatabase, ref, set } from "firebase/database";
+// import { getDatabase, ref, set } from "firebase/database";
+import { getStorage, ref as sRef, uploadBytes } from "firebase/storage";
 
 export default {
   data () {
@@ -83,6 +90,7 @@ export default {
       playTime: null,
       numberOfPeople: null,
       openChat: null,
+      uploadFile: null
     }
   },
   computed: {
@@ -114,15 +122,18 @@ export default {
             eventParticiPants: []
           }).then((result) => {
             this.eventName = this.venue = this.timesDay = this.deadline = this.cost = this.cancel = this.prefectures = this.playTime = this.numberOfPeople = this.openChat = null
-
-            const realTimedb = getDatabase()
-            // イベントチャットルームを作成
-            set(ref(realTimedb, `eventChatRoom/${result.id}`), {
-              eventId: result.id,
-            })
+  
+            // const realTimedb = getDatabase()
+            // // イベントチャットルームを作成
+            // set(ref(realTimedb, `eventChatRoom/${result.id}`), {
+            //   eventId: result.id,
+            // })
+            this.upload(result.id)
+          }).then(() => {
             alert("イベントを作成しました")
             this.$router.push('/')
-          }).catch((error) => {
+          })
+          .catch((error) => {
             console.log(error)
           })
         } else {
@@ -132,6 +143,23 @@ export default {
         console.error("Error adding document: ", e);
       }
 
+    },
+    selectedFile (e) {
+      e.preventDefault()
+      let files = e.target.files
+      this.uploadFile = files[0]
+      console.log(this.uploadFile);
+    },
+    upload (eventId) {
+      const storage = getStorage()
+      const storageRef = sRef(storage, `event_images/${eventId}.${this.uploadFile.name.split('.')[1]}`)
+
+      // 画像をStorageにアップロード
+      uploadBytes(storageRef, this.uploadFile).then(() => {
+        console.log('Uploaded a blob or file!')
+      }).catch((error) => {
+        console.log(error);
+      })
     }
   }
 }
