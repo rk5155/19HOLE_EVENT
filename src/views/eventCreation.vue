@@ -94,7 +94,7 @@ export default {
   },
   computed: {
     emptyCheck () {
-      if (this.eventName && this.venue && this.timesDay && this.deadline && this.cost && this.cancel && this.prefectures && this.playTime && this.numberOfPeople && this.openChat) {
+      if (this.eventName && this.venue && this.timesDay && this.deadline && this.cost && this.cancel && this.prefectures && this.playTime && this.numberOfPeople && this.openChat && this.uploadFile) {
         return true
       } else {
         return false
@@ -147,7 +147,6 @@ export default {
       e.preventDefault()
       let files = e.target.files
       this.uploadFile = files[0]
-      console.log(this.uploadFile);
     },
     upload (eventId) {
       const storage = getStorage()
