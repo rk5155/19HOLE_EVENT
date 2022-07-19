@@ -32,6 +32,7 @@
 import { collection, getDocs, getFirestore, updateDoc, doc, arrayUnion, getDoc, arrayRemove, deleteDoc, query, where } from "firebase/firestore";
 import firebaseUtils from '@/firebaseUtils'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
+import { getStorage, ref, deleteObject } from "firebase/storage";
 
 export default {
   data () {
@@ -154,6 +155,11 @@ export default {
                 this.$router.go({path: '/', force: true})
               })
           })
+        
+        // イベント画像を削除
+        const storage = getStorage();
+        const desertRef = ref(storage, `event_images/${eventId}.png`);
+        deleteObject(desertRef).then(() => {})
       }
     },
     getDayOfWeek (timesDayEvent) {

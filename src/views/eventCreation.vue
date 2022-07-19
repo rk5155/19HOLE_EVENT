@@ -62,10 +62,9 @@
       </div>
 
       <div class="form-group">
-        <input @change="selectedFile" type="file" class="custom-file-input">
+        <input @change="selectedFile" type="file" accept=".png">
         <label class="custom-file-label" for="inputFile" data-browse="参照">ファイルを選択(ここにドロップすることもできます)</label>
       </div>
-      <!-- <button @click.prevent="upload()">画像</button> -->
 
       <button @click="postEvent" type="button">イベント追加</button>
     </form>
