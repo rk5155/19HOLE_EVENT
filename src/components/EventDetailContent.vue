@@ -1,31 +1,42 @@
 <template>
-  <div class="card">
+  <div class="card eventDetail">
     <h5 class="card-header">{{ event.eventName }}</h5>
     <div class="card-body">
       
       <h3 class="card-text">開催日時</h3>
-      <p class="eventList__text">{{ event.timesDay }} {{event.playTime}}</p>
-      
-
-      <h3 class="card-text">会場</h3>
-      <p class="eventList__text">{{ event.venue }}</p>
-
-      <h3 class="card-text">締め切り</h3>
-      <p class="eventList__text">{{ event.deadline }}</p>
-
-      <h3 class="card-text">プレー料金</h3>
-      <p class="eventList__text">{{ event.cost.toLocaleString() }}円</p>
+      <p class="eventDetail__text">{{ event.timesDay }} {{event.playTime}}</p>
 
       <h3 class="card-text">都道府県</h3>
-      <p class="eventList__text">{{ event.prefectures }}</p>
+      <p class="eventDetail__text">{{ event.prefectures }}</p>
+
+      <h3 class="card-text">会場</h3>
+      <p class="eventDetail__text">{{ event.venue }}</p>
+
+      <h3 class="card-text">プレー料金</h3>
+      <p class="eventDetail__text">
+        {{ event.cost.toLocaleString() }}円<br>
+        ※プレー料金は当日各自でご精算となります。
+      </p>
+
+      <h3 class="card-text">参加費</h3>
+      <p class="eventDetail__text">
+        1,000円<br>
+        ※参加費を先にお支払いお願いします。<br>
+        ※プレー料金は参加費を差し引いた金額となっております。<br>
+        ※イベント開催が中止となった場合は返金させていただきます。
+      </p>
+
+      <h3 class="card-text">締め切り</h3>
+      <p class="eventDetail__text">{{ event.deadline }}</p>
+
 
       <h3 class="card-text">募集人数</h3>
-      <p class="eventList__text">{{ event.numberOfPeople }}人</p>
+      <p class="eventDetail__text">{{ event.numberOfPeople }}人</p>
 
       <h3 class="card-text">キャンセル規定</h3>
-      <p class="eventList__text">{{ event.cancel }}</p>
+      <p class="eventDetail__text">{{ event.cancel }}</p>
 
-      <button class="btn btn-primary" @click="participationFeePayment(event.eventId)">参加する</button>
+      <button class="btn eventList__btn" @click="participationFeePayment(event.eventId)">参加する</button>
 
       <stripe-checkout
         ref="checkoutRef"
@@ -97,3 +108,27 @@ export default {
   },
 }
 </script>
+
+<style>
+.card-header {
+  text-align: center;
+  font-weight: bold;
+}
+
+.card-text {
+  border-bottom: 2px dotted;
+  display: inline-block;
+  padding-bottom: 4px;
+}
+
+.btn.eventList__btn {
+  width: 100%;
+  color: white;
+  font-weight: bold;
+  background-color: #88D8DC;
+}
+
+.eventDetail__text {
+  margin-bottom: 26px;
+}
+</style>

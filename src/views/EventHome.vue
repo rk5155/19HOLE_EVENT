@@ -6,22 +6,24 @@
       <div v-for="(event, index) in events" :key="index" class="card eventItem">
         <img :src="event.image" class="card-img-top">
         <div class="card-body">
-          <p v-if="isEventCrowded(event)" class="eventList__situation">募集中です！</p>
-          <p v-else class="eventList__situation">このイベントは満員です。</p>
+          <span v-if="isEventCrowded(event)" class="eventList__situation">募集中</span>
+          <span v-else class="eventList__situation">満員</span>
 
-          <span>{{ event.timesDay }}({{ getDayOfWeek(event.timesDay) }}) {{ event.playTime }} スタート！</span>
-          <span>{{ event.prefectures }}</span>
-          <h2 class="card-text">{{ event.eventName }}</h2>
-          <router-link :to="{ name: 'EventDetail', params: { eventId: event.eventId, event: event }}" class="btn btn-primary eventList__btn">詳細を見る</router-link>
+          <div class="eventList__textWrapper">
+            <p class="eventList__text">{{ event.timesDay }}({{ getDayOfWeek(event.timesDay) }})<br>{{ event.playTime }} スタート！</p>
+            <p class="eventList__text">{{ event.prefectures }}</p>
+          </div>
+
+          <router-link :to="{ name: 'EventDetail', params: { eventId: event.eventId, event: event }}" class="btn eventList__btn">詳細を見る</router-link>
 
           <template v-if="isEventToAttend(event.eventId)">
             <p class="events__participation">このイベントに参加予定です！<br>参加メンバーとオープンチャットでやりとりしましょう！</p>
-            <!-- <button class="btn btn-primary"><router-link :to="{ name: 'ChatRoom', params: { eventId: event.eventId }}">グループチャット</router-link></button> -->
-            <a :href="event.openChat" target="_blank" class="btn btn-primary eventList__btn">オープンチャットに参加する</a>
-            <button class="btn btn-primary eventList__btn eventList__btn--margin" @click="nonParticipationEvent(event.eventId)">不参加</button>
+            <!-- <button class="btn "><router-link :to="{ name: 'ChatRoom', params: { eventId: event.eventId }}">グループチャット</router-link></button> -->
+            <a :href="event.openChat" target="_blank" class="btn  eventList__btn">オープンチャットに参加する</a>
+            <button class="btn eventList__btn eventList__btn--margin" @click="nonParticipationEvent(event.eventId)">不参加</button>
           </template>
 
-          <button v-if="currentUserData && currentUserData.admin" class="btn btn-primary eventList__btn eventList__btn--margin" @click="eventDelete(event.eventId)">イベント削除</button>
+          <button v-if="currentUserData && currentUserData.admin" class="btn eventList__btn eventList__btn--margin" @click="eventDelete(event.eventId)">イベント削除</button>
         </div>
       </div>
     </div>
@@ -205,19 +207,26 @@ h2.card-title {
 .eventItem {
   width: 49%;
   font-size: 16px;
-}
-
-.btn.btn-primary {
-  color: white;
-  font-weight: bold;
+  margin-bottom: 16px;
 }
 
 .events__participation, .eventList__situation {
-  color: red;
+  display: inline-block;
+  color: white;
+  background-color: #F65656;
+  font-weight: bold;
+  margin-bottom: 6px;
+  margin-right: 4px;
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 6px;
 }
 
-.eventList__btn {
+.btn.eventList__btn {
   width: 100%;
+  color: white;
+  font-weight: bold;
+  background-color: #88D8DC;
 }
 
 .eventList__btn--margin {
@@ -225,8 +234,13 @@ h2.card-title {
 }
 
 .eventList__text {
-  margin-bottom: 30px;
+  margin-bottom: 2px;
 }
+
+.eventList__textWrapper {
+  margin-bottom: 10px;
+}
+
 @media screen and (max-width: 580px) {
   .events__title {
     font-size: 24px;
@@ -236,12 +250,11 @@ h2.card-title {
     font-size: 18px;
   }
 
-  .eventItem {
-    width: 100%;
+  .eventItem .card-body {
+    padding: 8px;
   }
-
-  .eventList {
-    display: block;
+  .eventList__text {
+    font-size: 16px;
   }
 }
 </style>
