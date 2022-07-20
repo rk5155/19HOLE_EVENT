@@ -4,7 +4,7 @@
     <p>{{ eventTotalNumber }}件</p>
     <div class="eventList">
       <div v-for="(event, index) in events" :key="index" class="card eventItem">
-        <img src="@/assets/images/sample.png" class="card-img-top">
+        <img :src="event.image" class="card-img-top">
         <div class="card-body">
           <p v-if="isEventCrowded(event)" class="eventList__situation">募集中です！</p>
           <p v-else class="eventList__situation">このイベントは満員です。</p>

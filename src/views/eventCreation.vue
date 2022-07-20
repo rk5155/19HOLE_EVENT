@@ -72,9 +72,9 @@
 </template>
 
 <script>
-import { collection, addDoc, getFirestore } from "firebase/firestore";
+import { collection, addDoc, getFirestore, doc, setDoc } from "firebase/firestore";
 // import { getDatabase, ref, set } from "firebase/database";
-import { getStorage, ref as sRef, uploadBytes } from "firebase/storage";
+import { getStorage, ref as sRef, uploadBytes, getDownloadURL } from "firebase/storage";
 
 export default {
   data () {
@@ -107,33 +107,13 @@ export default {
 
       try {
         if (this.emptyCheck) {
-          addDoc(collection(db, "events"), {
-            eventName: this.eventName,
-            venue: this.venue,
-            timesDay: this.timesDay,
-            deadline: this.deadline,
-            cost: this.cost,
-            cancel: this.cancel,
-            prefectures: this.prefectures,
-            playTime: this.playTime,
-            numberOfPeople: this.numberOfPeople,
-            openChat: this.openChat,
-            eventParticiPants: []
-          }).then((result) => {
-            this.eventName = this.venue = this.timesDay = this.deadline = this.cost = this.cancel = this.prefectures = this.playTime = this.numberOfPeople = this.openChat = null
-  
+          addDoc(collection(db, "events"), {}).then((result) => {
             // const realTimedb = getDatabase()
             // // イベントチャットルームを作成
             // set(ref(realTimedb, `eventChatRoom/${result.id}`), {
             //   eventId: result.id,
             // })
             this.upload(result.id)
-          }).then(() => {
-            alert("イベントを作成しました")
-            this.$router.push('/')
-          })
-          .catch((error) => {
-            console.log(error)
           })
         } else {
           alert("未入力があるよ")
@@ -155,8 +135,32 @@ export default {
       // 画像をStorageにアップロード
       uploadBytes(storageRef, this.uploadFile).then(() => {
         console.log('Uploaded a blob or file!')
-      }).catch((error) => {
-        console.log(error);
+      }).then(() => {
+        const db = getFirestore()
+
+        getDownloadURL(sRef(storage, `event_images/${eventId}.png`)).then((result) => {
+          setDoc(doc(db, "events", eventId), {
+            eventName: this.eventName,
+            venue: this.venue,
+            timesDay: this.timesDay,
+            deadline: this.deadline,
+            cost: this.cost,
+            cancel: this.cancel,
+            prefectures: this.prefectures,
+            playTime: this.playTime,
+            numberOfPeople: this.numberOfPeople,
+            openChat: this.openChat,
+            eventParticiPants: [],
+            image: result
+          });
+        })
+        .then(() => {
+          alert("イベントを作成しました")
+          this.$router.push('/')
+        })
+        .catch((error) => {
+          console.log(error)
+        })
       })
     }
   }
