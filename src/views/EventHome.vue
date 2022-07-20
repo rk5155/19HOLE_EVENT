@@ -8,18 +8,18 @@
         <div class="card-body">
           <span v-if="isEventCrowded(event)" class="eventList__situation">募集中</span>
           <span v-else class="eventList__situation">満員</span>
+          <span v-if="isEventToAttend(event.eventId)" class="eventList__situation eventList__situation--participation">このイベントに参加予定です！<br>参加メンバーとオープンチャットでやりとりしましょう！</span>
 
           <div class="eventList__textWrapper">
             <p class="eventList__text">{{ event.timesDay }}({{ getDayOfWeek(event.timesDay) }})<br>{{ event.playTime }} スタート！</p>
             <p class="eventList__text">{{ event.prefectures }}</p>
           </div>
 
-          <router-link :to="{ name: 'EventDetail', params: { eventId: event.eventId, event: event }}" class="btn eventList__btn">詳細を見る</router-link>
+          <router-link :to="{ name: 'EventDetail', params: { eventId: event.eventId, event: event, isEventToAttend: isEventToAttend(event.eventId) }}" class="btn eventList__btn">詳細を見る</router-link>
 
           <template v-if="isEventToAttend(event.eventId)">
-            <p class="events__participation">このイベントに参加予定です！<br>参加メンバーとオープンチャットでやりとりしましょう！</p>
             <!-- <button class="btn "><router-link :to="{ name: 'ChatRoom', params: { eventId: event.eventId }}">グループチャット</router-link></button> -->
-            <a :href="event.openChat" target="_blank" class="btn  eventList__btn">オープンチャットに参加する</a>
+            <a :href="event.openChat" target="_blank" class="btn eventList__btn eventList__btn--margin">オープンチャットに参加する</a>
             <button class="btn eventList__btn eventList__btn--margin" @click="nonParticipationEvent(event.eventId)">不参加</button>
           </template>
 
@@ -210,7 +210,7 @@ h2.card-title {
   margin-bottom: 16px;
 }
 
-.events__participation, .eventList__situation {
+.eventList__situation {
   display: inline-block;
   color: white;
   background-color: #F65656;
@@ -220,6 +220,10 @@ h2.card-title {
   font-size: 12px;
   padding: 2px 8px;
   border-radius: 6px;
+}
+
+.eventList__situation--participation {
+  display: block;
 }
 
 .btn.eventList__btn {

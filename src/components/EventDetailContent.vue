@@ -36,7 +36,8 @@
       <h3 class="card-text">キャンセル規定</h3>
       <p class="eventDetail__text">{{ event.cancel }}</p>
 
-      <button class="btn eventList__btn" @click="participationFeePayment(event.eventId)">参加する</button>
+      <p class="eventDetail__participation" v-if="isEventToAttend">このイベントに参加予定です。</p>
+      <button v-else class="btn eventList__btn" @click="participationFeePayment(event.eventId)">参加する</button>
 
       <stripe-checkout
         ref="checkoutRef"
@@ -56,7 +57,7 @@
 import { StripeCheckout } from '@vue-stripe/vue-stripe';
 
 export default {
-  props: ["event"],
+  props: ["event", "isEventToAttend"],
   components: {
     StripeCheckout,
   },
@@ -130,5 +131,10 @@ export default {
 
 .eventDetail__text {
   margin-bottom: 26px;
+}
+
+.eventDetail__participation {
+  color: #F65656;
+  font-weight: bold;
 }
 </style>
