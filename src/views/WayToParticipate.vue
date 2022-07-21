@@ -18,8 +18,10 @@
 
       <div class="wayToParticipateFlow__wrapper">
         <h2 class="wayToParticipateFlow__title">3, イベント一覧から参加したいイベントを選ぶ</h2>
-        <p>参加ボタンを押しましょう。</p>
-        <img class="wayToParticipateFlow__img" src="@/assets/images/wayToParticipate/img3.png" alt="">
+        <p>詳細を確認しましょう。</p>
+        <img class="wayToParticipateFlow__img" src="@/assets/images/wayToParticipate/img3_1.png" alt="">
+        <p class="wayToParticipateFlow__text--margin">参加ボタンを押して参加費の支払い画面に進みます。<br>※この時点ではお支払いされません。</p>
+        <img class="wayToParticipateFlow__img" src="@/assets/images/wayToParticipate/img3_2.png" alt="">
       </div>
 
       <div class="wayToParticipateFlow__wrapper">
@@ -80,6 +82,10 @@
 
 .wayToParticipateFlow__wrapper {
   margin-bottom: 80px;
+}
+
+.wayToParticipateFlow__text--margin {
+  margin: 20px 0;
 }
 
 @media screen and (max-width: 580px) {
