@@ -1,7 +1,6 @@
 <template>
-  <div class="signin">
-    <h2>ログアウト</h2>
-      <button @click="logout">ログアウト</button>
+  <div class="looutPage">
+    <button @click="logout" class="btn btn-primary logoutPage__button">ログアウト</button>
   </div>
 </template>
 
@@ -24,3 +23,10 @@ export default {
   }
 }
 </script>
+
+<style>
+.logoutPage__button {
+  text-align: center;
+  width: 100%;
+}
+</style>
