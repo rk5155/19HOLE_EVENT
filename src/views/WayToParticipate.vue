@@ -47,6 +47,7 @@
 
       <div class="wayToParticipateFlow__wrapper">
         <h2 class="wayToParticipateFlow__title">7, 当日のイベントを楽しみましょう！</h2>
+        <p>当日はスタート時間までに集合いただければOKです！</p>
       </div>
 
     </div>
