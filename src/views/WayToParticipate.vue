@@ -26,8 +26,8 @@
 
       <div class="wayToParticipateFlow__wrapper">
         <h2 class="wayToParticipateFlow__title">4, 参加費を支払う</h2>
-        <p>※参加費を先にお支払いお願いします。</p>
-        <p>※プレー料金は参加費を差し引いた金額となっております。</p>
+        <p>※参加費を先にお支払いお願いします。参加確定の預かり金として、先にいただいております。</p>
+        <p>※プレー料金は参加費を差し引いた金額となっております。<br>例）10,000円（プレー料金）- 1,000円(参加費) = 9,000円（プレー料金）</p>
         <p>※プレー料金は当日各自でご精算となります。</p>
         <p>※イベント開催が中止となった場合は返金させていただきます。</p>
         <img class="wayToParticipateFlow__img" src="@/assets/images/wayToParticipate/img4.png" alt="">

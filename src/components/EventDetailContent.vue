@@ -14,14 +14,14 @@
 
       <h3 class="card-text">プレー料金</h3>
       <p class="eventDetail__text">
-        {{ event.cost.toLocaleString() }}円<br>
+        {{ (event.cost + 1000).toLocaleString() }}円 - 1,000円(参加費) = {{ event.cost.toLocaleString() }}円<br>
         ※プレー料金は当日各自でご精算となります。
       </p>
 
       <h3 class="card-text">参加費</h3>
       <p class="eventDetail__text">
         1,000円<br>
-        ※参加費を先にお支払いお願いします。<br>
+        ※参加費を先にお支払いお願いします。参加確定の預かり金として、先にいただいております。<br>
         ※プレー料金は参加費を差し引いた金額となっております。<br>
         ※イベント開催が中止となった場合は返金させていただきます。
       </p>
