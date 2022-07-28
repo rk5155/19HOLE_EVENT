@@ -4,15 +4,18 @@
 
     <div v-for="event in events" :key="event.id" class="adminPageList">
       <h2>{{ event.eventName }}</h2>
+      <h3>参加締め切り</h3>
+      <p>{{ event.deadline }}</p>
       <h3>イベント参加者</h3>
       <ul>
-        <template v-if="event.eventParticiPants">
-          <li v-for="participant in event.eventParticiPants" :key="participant">{{ participant }}</li>
+        <template v-if="event.eventParticiPants.length !== 0">
+          <li v-for="(participant, i) in event.eventParticiPants" :key="i">{{ participant }}</li>
         </template>
         <template v-else>
           0人です
         </template>
       </ul>
+      <hr>
     </div>
   </div>
 </template>
@@ -40,8 +43,20 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .adminPageList {
   margin-bottom: 40px;
+}
+
+h1 {
+  margin-bottom: 60px;
+}
+
+h2 {
+  margin-bottom: 30px;
+}
+
+h3 {
+  font-size: 20px;
 }
 </style>

@@ -37,6 +37,7 @@
       <p class="eventDetail__text">{{ event.cancel }}</p>
 
       <p class="eventDetail__participation" v-if="isEventToAttend">このイベントに参加予定です。</p>
+      <p class="eventDetail__participation" v-else-if="!isEventCrowded">このイベントは満員です。</p>
       <button v-else class="btn eventList__btn" @click="participationFeePayment(event.eventId)">参加する</button>
 
       <stripe-checkout
@@ -57,7 +58,7 @@
 import { StripeCheckout } from '@vue-stripe/vue-stripe';
 
 export default {
-  props: ["event", "isEventToAttend"],
+  props: ["event", "isEventToAttend", "isEventCrowded"],
   components: {
     StripeCheckout,
   },
